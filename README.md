@@ -13,4 +13,5 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |`151018`|R London businesses directory|https://npalomin.github.io/pnum/fame_rev.html  |
 |`281018`|Analysis of Point of Interest(POI) data|https://npalomin.github.io/pnum/poi.html |
 |`291018`|Analysis of Nomis data|https://npalomin.github.io/pnum/nomis.html  |
-|`301018`|Openmapping SS - lsoa|https://npalomin.github.io/syntax/nomis.htm  |
+|`311018`|Li-Openmapping SS - lsoa|https://github.com/npalomin/pnum/blob/master/ss_lsoa_light.md  |
+|`311018`|Openmapping SS - lsoa|/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis  |
