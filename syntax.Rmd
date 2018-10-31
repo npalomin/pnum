@@ -1,5 +1,5 @@
 ---
-title: "Nomis data"
+title: "Nomis + Openmapping SS"
 author: "np"
 date: "29/10/2018"
 output: 
@@ -51,79 +51,132 @@ https://www.ons.gov.uk/methodology/geography/ukgeographies/censusgeography
 
 https://github.com/spacesyntax/OpenMapping  
 
+https://www.r-bloggers.com/5-ways-to-subset-a-data-frame-in-r/  
+
+https://stackoverflow.com/questions/11562656/calculate-the-mean-by-group  
+
+http://zevross.com/blog/2018/10/02/creating-beautiful-demographic-maps-in-r-with-the-tidycensus-and-tmap-packages/  
+
+https://geocompr.robinlovelace.net/adv-map.html
+
 ## prepare data
+
+Read Openmapping data
 ```{r message=FALSE, warning=FALSE}
-ssx <- read_csv("/Volumes/ucfnnap/R/Rprojects/ssyntax/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv")
+ssx <- read_csv("/Volumes/ucfnnap/R/Rprojects/ssyntax/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv") # 2,063,322 observations of 36 variables
 ```
+
+Read Omnis data
+```{r message=FALSE, warning=FALSE}
+nom <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/nomis_4835.csv") # 4,835 obs.
+```
+
+Create variable 'lsoa11_cd' from variable 'lsoa11_2011' substract chr 1 to 4 (first 4 characters)
+```{r, message=FALSE, warning=FALSE}
+nom <- mutate(nom, lsoa11_cd = substr(lsoa_2011, 1, 9))
+```
+
+Read lsoa codes for London
+```{r, message=FALSE, warning=FALSE}
+lsoa_ldn <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/lsoa_ldn.csv") # 4,835 obs.
+class(lsoa_ldn)
+```
+
+Covert dataframe column to vector
+```{r}
+lsoa_ldnV <- as.vector(lsoa_ldn$lsoa_ldn, mode = 'any')
+lsoa_ldnV
+```
+
+Subset ssx with London lsoa codes 'lsoa_ldnV'
 
 ```{r}
-class(ssx)
-ssx <- st_as_sf(ssx, wkt='wkt', crs=27700) # ssx as sf
-
-# LA <- geojson_read("http://geoportal.statistics.gov.uk/datasets/8edafbe3276d4b56aec60991cbddda50_2.geojson", what = "sp")
-
-# lsoa boundaries
-censusb <- read_shape("/Volumes/ucfnnap/made_in_london/GISanalysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
-                       
-#pull out london using grep and the regex wildcard for'start of the string' (^) to to look for
-#the bit of the district code that relates to London (E09) from the 'lad15cd' column in the data
-#slot of our spatial polygons dataframe
-#LondonMap <- LA[grep("^E09",LA@data$lad15cd),]
-#plot it using the base plot function
-#qtm(LondonMap)
-qtm(censusb)
-censusb <- st_as_sf(censusb, crs=27700)
-class(censusb)
-class(ssx)
-censusb <- st_transform(censusb, 27700)
-censusb
-ssx
-ssxdf <- as.data.frame(ssx)
-names(ssxdf)
-# drop a the ssxdf 'geometry' column
-ssxdf <- ssxdf[,c(1:35)]
+ssx_ldn <- ssx[ssx$lsoa11cd %in% lsoa_ldnV,] # 111,582 obs.
 ```
 
-## append data
+Calculate mean value for lsoa of choice2kmrank
+
+```{r}
+choice2 <- aggregate(choice2kmrank ~ lsoa11cd, ssx_ldn, mean )
+
+```
+
+Load LSOA London boundaries geometries
+
+```{r}
+censusb <- read_shape("/Volumes/ucfnnap/made_in_london/GISanalysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
+qtm(censusb)
+```
+
+## append choice data
 ```{r message=FALSE, warning=FALSE}
-joined <- append_data(censusb,ssxdf, key.shp = "LSOA11CD", key.data = "lsoa11cd", ignore.duplicates = TRUE, ignore.na = TRUE)
-
-#lsoadata <- censusb %>%
-#  left_join(ssxdf, by = c("LSOA11CD" = "lsoa11cd"))
-
-# ldnss <- st_intersection(censusb, ssx)
+join1 <- append_data(censusb, choice2, key.shp = "LSOA11CD", key.data = "lsoa11cd", ignore.duplicates = TRUE, ignore.na = TRUE)
 ```
 
 ## quick map
 ```{r}
-qtm(joined,fill="choice2kmrank")
+qtm(join1,fill="choice2kmrank")
 ```
   
-
+## curtomize choice map
 ```{r}
-# ldn <- st_as_sf(LondonMap)
-# ldn <- st_transform(ldn, 27700)
-# ldn # epsg (SRID):    27700 Simple feature collection with 33 features and 6 fields
-# ssx # epsg (SRID):    27700 Simple feature collection with 2063322 features and 35 fields
-# st_crs(ldn)
-# st_crs(ssx)
-# ldnssx <- st_intersection(ldn, ssx)
-# 
-# names(ldnssx$lad15nm)
-# class(ldnssx)
-# 
-# cam <- ldnssx %>%
-#   filter(lad15nm == "Camden")
-# 
-# qtm(cam)
-# names(cam)
-# 
-# cam_choice2kmrank <- tm_shape(cam) + 
-#   tm_lines(col = "choice2kmrank", lwd = 0.5, title.col = "choice2kmrank", palette = "-Blues", style = "pretty") + 
-#   tm_layout(fontfamily = "serif", frame = FALSE, bg.color = "black", legend.text.color = "grey90")
-# cam_choice2kmrank
+ch <- tm_shape(join1) + 
+  tm_polygons("choice2kmrank",
+              style="jenks",
+              palette="-RdYlBu",
+              title="Choice 2km Mean per LSOA",
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+ch 
 ```
 
+## append nomis data
+```{r message=FALSE, warning=FALSE}
+join1 <- append_data(join1, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", ignore.duplicates = TRUE, ignore.na = TRUE)
+names(join1)
+```
 
+## customize nomis data map
+
+```{r}
+manu <- tm_shape(join1) +
+  tm_polygons("Industry percentage",
+              style="jenks",
+              palette="PuRd",
+              title="Manufacturing perc. per LSOA",
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+manu
+```
+
+## Combine maps
+
+```{r}
+tmap_mode("plot")
+tmap_arrange(ch, manu)
+```
+```{r}
+tmap_mode("view")
+# tmap_arrange(ch, manu)
+
+```
+
+## two polygons
+
+```{r}
+int <- tm_shape(join1) +
+  tm_polygons(c("Industry percentage","choice2kmrank"))
+int
+```
+
+## via facets
+```{r}
+# facets = c("Industry percentage","choice2kmrank")
+# tm_shape(join1) +
+#   tm_polygons(facets) +
+#   tm_facets(nrow=1, sync = TRUE)
+```
 
 
