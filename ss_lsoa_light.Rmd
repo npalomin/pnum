@@ -11,14 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # openmapping SS - lsoa maps
 ```{r, out.width = "1000px", echo=FALSE}
-knitr::include_graphics("syntax_md_files/figure-markdown_github/unnamed-chunk-12-1.png")
+knitr::include_graphics("choice.png")
 ```
 
 
 ```{r, out.width = "1000px", echo=FALSE}
-knitr::include_graphics("syntax_md_files/figure-markdown_github/unnamed-chunk-14-1.png")
+knitr::include_graphics("c_manu.png")
 ```
 
 ```{r, out.width = "1000px", echo=FALSE}
-knitr::include_graphics("syntax_md_files/figure-markdown_github/unnamed-chunk-15-1.png")
+knitr::include_graphics("c_choice_manu.png")
 ```
