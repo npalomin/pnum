@@ -1,0 +1,153 @@
+---
+title: "FAME dataset from London Datastore"
+author: "NP"
+date: "28/10/2018"
+output: 
+  html_document:
+    number_sections: true
+    theme: readable
+---
+<style>
+  h1, h2, h3, h4, h5, h6{
+    color: #668e81;
+    font-family: "arial narrow", helvetica;
+  }
+  h1, h2{
+    font-size: 150%
+  }
+  h2{
+    font-variant: small-caps
+  }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Map of london businesses from London Datastore
+
+***
+Reference URLs
+
+http://www.sthda.com/english/wiki/computing-and-adding-new-variables-to-a-data-frame-in-r  
+https://data.london.gov.uk/dataset/strategic-industrial-location-points-london-plan-consultation-2009  
+https://data.london.gov.uk/dataset/strategic-industrial-location-points-london-plan-consolidated-alterations-2004  
+https://data.london.gov.uk/dataset/town-centre-locations-2015  
+https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london  
+https://data.cdrc.ac.uk/dataset/tlrn  
+https://data.london.gov.uk/dataset/directory-of-london-businesses  
+
+***
+
+**libraries**
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(readr)
+library(maptools)
+library(RColorBrewer)
+library(classInt)
+#library(OpenStreetMap)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(ggplot2)
+library(spData)
+library(tidyverse)
+```
+
+## prepare dataset
+
+Read from RDS server
+```{r, message=FALSE, warning=FALSE}
+bil <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/businesses-in-london.csv")
+```
+
+Create variable 'division' from variable 'SICCode.SicText_1' substract chr 1 to 4 (first 4 characters)
+```{r, message=FALSE, warning=FALSE}
+bil <- mutate(bil, division = substr(SICCode.SicText_1, 1, 4))
+```
+
+Change chr to num for 'division' variable
+```{r, message=FALSE, warning=FALSE}
+bil$division <- as.numeric(as.character(bil$division))
+```
+
+Convert numeric to factor to create Division labels 
+```{r}
+bil$divname <- cut(bil$division, 
+                  breaks = c(-Inf, 999, 1499, 1799, 1999, 3999, 4999, 5199, 5999, 6799, 8999, 9729, 9999),
+                  labels = c("Agriculture, Forestry and Fishing", "Mining", "Construction", "not used", "Manufacturing","Transportation, Communications, Electric, Gas and Sanitary service", "Wholesale Trade", "Retail Trade", "Finance, Insurance and Real Estate", "Services", "Public Administration", "Nonclassifiable"), right = TRUE)
+```
+
+Count number of variables in 'divname'
+```{r, message=FALSE, warning=FALSE}
+bil$divname <- as.character(bil$divname)
+# length(unique(bil[["divname"]])) # [1] 13 - Not necessary, see next results from next function
+library(plyr)
+library(knitr)
+sumt <- count(bil, vars = "divname")
+kable(sumt, caption = "Division Frequency")
+```
+
+## generate quick map
+
+Convert to dataframe - to SP object - to SF object
+```{r}
+bildf <-as.data.frame(bil)
+```
+
+Get long and lat from your data.frame. Make sure that the order is in lon/lat.
+```{r}
+latlon <- bildf[,c('long','lat')]
+bilsp <- SpatialPointsDataFrame(coords = latlon, data = bil,
+                               proj4string = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+```
+
+SP to SF
+```{r}
+bilsf <- st_as_sf(bilsp)
+```
+
+Subset by 'Manufacturing' . Plotting 'bil' won't work quickly because N = 1,130,474 obs.
+```{r}
+man <- subset(bilsp, divname == "Manufacturing")
+```
+
+Plot quick map "Manufacturing"
+```{r}
+qtm(man)
+```
+
+Style map 'Manufacturing'
+
+```{r message=FALSE, warning=FALSE}
+
+tmap_mode("plot") # or "plot" or "view"
+tm_shape(man) + 
+  tm_symbols(size=0.1,
+             shape = 20,
+             col = "magenta", 
+             alpha = .1,
+             border.lwd = NA
+  )
+```
+
+## interactive map manufacturing
+
+```{r message=FALSE, warning=FALSE}
+
+# tmap_mode("view") # or "plot" or "view"
+# tm_shape(man) + 
+#   tm_symbols(size=0.001,
+#              shape = 20,
+#              col = "magenta", 
+#              alpha = .1,
+#              border.lwd = NA
+#   )
+
+```
+

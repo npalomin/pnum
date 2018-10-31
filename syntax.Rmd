@@ -1,0 +1,129 @@
+---
+title: "Nomis data"
+author: "np"
+date: "29/10/2018"
+output: 
+  html_document:
+    number_sections: true
+    theme: readable
+---
+<style>
+  h1, h2, h3, h4, h5, h6{
+    color: #668e81;
+    font-family: "arial narrow", helvetica;
+  }
+  h1, h2{
+    font-size: 150%
+  }
+  h2{
+    font-variant: small-caps
+  }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Openmapping space syntax
+
+libraries
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(tmap)
+library(maptools)
+#library(classint) 
+#library(OpenStreetMap)
+library(RColorBrewer)
+#library(Sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+#library(downloader)
+library(rgdal)
+library(geojsonio)
+```
+
+Reference URLs  
+
+https://www.ons.gov.uk/methodology/geography/ukgeographies/censusgeography  
+
+https://github.com/spacesyntax/OpenMapping  
+
+## prepare data
+```{r message=FALSE, warning=FALSE}
+ssx <- read_csv("/Volumes/ucfnnap/R/Rprojects/ssyntax/OpenMapping-gb-v1_csv/csv/ssx_openmapping_gb_v1.csv")
+```
+
+```{r}
+class(ssx)
+ssx <- st_as_sf(ssx, wkt='wkt', crs=27700) # ssx as sf
+
+# LA <- geojson_read("http://geoportal.statistics.gov.uk/datasets/8edafbe3276d4b56aec60991cbddda50_2.geojson", what = "sp")
+
+# lsoa boundaries
+censusb <- read_shape("/Volumes/ucfnnap/made_in_london/GISanalysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
+                       
+#pull out london using grep and the regex wildcard for'start of the string' (^) to to look for
+#the bit of the district code that relates to London (E09) from the 'lad15cd' column in the data
+#slot of our spatial polygons dataframe
+#LondonMap <- LA[grep("^E09",LA@data$lad15cd),]
+#plot it using the base plot function
+#qtm(LondonMap)
+qtm(censusb)
+censusb <- st_as_sf(censusb, crs=27700)
+class(censusb)
+class(ssx)
+censusb <- st_transform(censusb, 27700)
+censusb
+ssx
+ssxdf <- as.data.frame(ssx)
+names(ssxdf)
+# drop a the ssxdf 'geometry' column
+ssxdf <- ssxdf[,c(1:35)]
+```
+
+## append data
+```{r message=FALSE, warning=FALSE}
+joined <- append_data(censusb,ssxdf, key.shp = "LSOA11CD", key.data = "lsoa11cd", ignore.duplicates = TRUE, ignore.na = TRUE)
+
+#lsoadata <- censusb %>%
+#  left_join(ssxdf, by = c("LSOA11CD" = "lsoa11cd"))
+
+# ldnss <- st_intersection(censusb, ssx)
+```
+
+## quick map
+```{r}
+qtm(joined,fill="choice2kmrank")
+```
+  
+
+```{r}
+# ldn <- st_as_sf(LondonMap)
+# ldn <- st_transform(ldn, 27700)
+# ldn # epsg (SRID):    27700 Simple feature collection with 33 features and 6 fields
+# ssx # epsg (SRID):    27700 Simple feature collection with 2063322 features and 35 fields
+# st_crs(ldn)
+# st_crs(ssx)
+# ldnssx <- st_intersection(ldn, ssx)
+# 
+# names(ldnssx$lad15nm)
+# class(ldnssx)
+# 
+# cam <- ldnssx %>%
+#   filter(lad15nm == "Camden")
+# 
+# qtm(cam)
+# names(cam)
+# 
+# cam_choice2kmrank <- tm_shape(cam) + 
+#   tm_lines(col = "choice2kmrank", lwd = 0.5, title.col = "choice2kmrank", palette = "-Blues", style = "pretty") + 
+#   tm_layout(fontfamily = "serif", frame = FALSE, bg.color = "black", legend.text.color = "grey90")
+# cam_choice2kmrank
+```
+
+
+
+
