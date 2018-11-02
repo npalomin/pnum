@@ -1,0 +1,75 @@
+---
+title: "Street Metrics Corelations"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Street Space Allocation Measures / Centrality
+
+*libraries*
+```{r message=FALSE, warning=FALSE}
+library(tmap)
+library(tmaptools)
+library(ggplot2)
+```
+
+
+Read dataset joined in /Volumes/ucfnnap/R/Rprojects/syntax.R
+```{r message=FALSE, warning=FALSE}
+library(readr)
+joinssx <- read_csv("/Volumes/ucfnnap/R/Rprojects/ssyntax/joinssx.csv")
+```
+
+Names of variables
+
+```{r}
+nam <- names(joinssx)
+nam
+```
+
+Summary 
+
+```{r}
+summary(joinssx)
+```
+
+Delete missing values from relevant variables
+
+```{r}
+nas <- c("Leng", "head", "foW", "caW", "toW", "caP", "foP", "choice2kmrank", "choice2kmlog")
+SM <- na.omit(joinssx[,nas])
+summary(SM)
+
+
+```
+
+Quick map
+
+```{r}
+class(SM)
+class(joinssx)
+#qtm(SM)
+```
+
+# scatter plots
+
+```{r}
+c1 <- ggplot(SM, aes(SM$toW, SM$choice2kmlog)) +
+  geom_point(alpha = 0.1, shape = ".", colour = "gray60") +
+  #scale_x_log10("Total width", c(5, seq(10, 20, by=2), 20, 30, 40, 50)) +
+  #scale_y_log10("Choice 2km", c(seq(5, 10, by=1), 20, 30, 40, 50)) +
+  geom_smooth(method = "lm", size = 0.5, colour = "gray20") + # Smoothed conditional means "lm"= linear method
+  ggtitle("Total width to Choice 2km") +
+  theme_bw(base_family="Georgia") +
+  theme(axis.text=element_text(size=9), axis.title=element_text(size=16), 
+        plot.title = element_text(size = 16, face = "bold"),
+        panel.grid.major = element_blank(),panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_blank())
+c1
+```
+
+
