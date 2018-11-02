@@ -72,4 +72,12 @@ c1 <- ggplot(SM, aes(SM$toW, SM$choice2kmlog)) +
 c1
 ```
 
+Regression analysis
+
+```{r}
+regression <- lm(SM$choice2kmlog ~ SM$toW)
+r2 <- summary(regression)$r.squared
+r2
+regression
+```
 

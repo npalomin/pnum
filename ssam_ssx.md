@@ -241,3 +241,25 @@ c1
 ```
 
 ![](ssam_ssx_files/figure-markdown_github/unnamed-chunk-7-1.png)
+
+Regression analysis
+
+``` r
+regression <- lm(SM$choice2kmlog ~ SM$toW)
+r2 <- summary(regression)$r.squared
+r2
+```
+
+    ## [1] 0.0210764
+
+``` r
+regression
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = SM$choice2kmlog ~ SM$toW)
+    ## 
+    ## Coefficients:
+    ## (Intercept)       SM$toW  
+    ##     3.04215      0.01849
