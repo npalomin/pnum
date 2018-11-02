@@ -20,8 +20,7 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 
 |Description|URL|
 |----|----|
+|UK Standard Industrial Classification (SIC) Hierarchy ONS|https://onsdigital.github.io/dp-classification-tools/standard-industrial-classification/ONS_SIC_hierarchy_view.html|
 |Old Kent Roads CASS Cities|https://static1.squarespace.com/static/59bbe4992994ca1b4f8b771c/t/59c42ae946c3c4e076d4b38e/1506028307559/Cass+Cities+OKR+A+to+Z+2016-17.pdf|
 |Points of Interest OS|https://www.ordnancesurvey.co.uk/docs/product-schemas/points-of-interest-classification-scheme.pdf|
-|National Land Use Database:
-Land Use and Land Cover
-Classification|https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/11493/144275.pdf|
+|National Land Use Database. Land Use and Land Cover Classification |https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/11493/144275.pdf|
