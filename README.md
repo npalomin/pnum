@@ -17,6 +17,7 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |`311018`|Openmapping SS - lsoa|/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/nomis_ss.html  |
 |`061118`|Site visit|https://gist.github.com/npalomin/c0767c782323539f3291c9c36e2ecdd5 |
 |`061118`|Openmapping SS v2|file:///Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/nomis_ss_1.html |
+|`061118`|Interactive SSX - Nomis|https://npalomin.github.io/pnum/syntax_interactive.html  |
 
 ## Manufacturing Classification schemes reference
 
