@@ -169,7 +169,8 @@ manuCP <- tm_shape(join1) +
               alpha = 0.6,
               title="Manufacturing Count. per LSOA",
               border.col = "white",
-              lwd=0.5) +
+              lwd=0.5,
+              popup.vars = c("Count","Industry percentage","choice2kmrank", "LAD11NM","LSOA11NM")) +
   tm_basemap(server="Esri.WorldImagery")
 manuCP
 ```
