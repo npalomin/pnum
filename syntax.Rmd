@@ -154,6 +154,7 @@ manu
 ## customize nomis data map INDUSTRY COUNT
 
 ```{r}
+tmap_mode("view")
 manuC <- tm_shape(join1) +
   tm_polygons("Count",
               style="jenks",
@@ -162,7 +163,21 @@ manuC <- tm_shape(join1) +
               border.col="white",
               border.alpha = 0.1) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
-manu
+manuC
+```
+## Manufacture count plot
+
+```{r}
+tmap_mode("plot")
+manuCP <- tm_shape(join1) +
+  tm_polygons("Count",
+              style="jenks",
+              palette="PuBuGn",
+              title="Manufacturing Count. per LSOA",
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+manuCP
 ```
 
 
