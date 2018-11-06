@@ -137,7 +137,7 @@ join1 <- append_data(join1, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", i
 names(join1)
 ```
 
-## customize nomis data map
+## customize nomis data map INDUSTRY PERCENTAGE
 
 ```{r}
 manu <- tm_shape(join1) +
@@ -151,6 +151,21 @@ manu <- tm_shape(join1) +
 manu
 ```
 
+## customize nomis data map INDUSTRY COUNT
+
+```{r}
+manuC <- tm_shape(join1) +
+  tm_polygons("Count",
+              style="jenks",
+              palette="PuBuGn",
+              title="Manufacturing Count. per LSOA",
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+manu
+```
+
+
 ## Combine maps
 
 ```{r}
@@ -163,13 +178,21 @@ tmap_mode("view")
 
 ```
 
-## two polygons
+## two polygons -"Industry percentage","choice2kmrank"
 
 ```{r}
 int <- tm_shape(join1) +
   tm_polygons(c("Industry percentage","choice2kmrank"))
 int
 ```
+
+## Manufacture Count
+```{r}
+manuCI <- tm_shape(join1) +
+  tm_polygons("Count")
+manuCI
+```
+
 
 ## via facets
 ```{r}
