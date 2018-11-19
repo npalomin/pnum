@@ -35,7 +35,7 @@ http://zevross.com/blog/2018/10/02/creating-beautiful-demographic-maps-in-r-with
 
 ***
 
-**"An extract compiled from the Inter Departmental Business Register (IDBR) recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status. Available from country down to mid layer super output area and Scottish intermediate zones"**
+*"An extract compiled from the Inter Departmental Business Register (IDBR) recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status. Available from country down to mid layer super output area and Scottish intermediate zones"*
 
 **libraries**
 ```{r, message=FALSE, warning=FALSE}
@@ -117,7 +117,96 @@ Count <- tm_shape(join1) +
               title="Manufacturing Count per MSOA",
               border.col="white",
               border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r 
 Count
+```
+  
+Quick 'spatial data classification method' comparison
+URLs: https://geocompr.robinlovelace.net/adv-map.html  
+
+```{r}
+Comp <- tm_shape(join1) +
+  tm_polygons(c("Total","Total","Total","Total"),
+              style=c("jenks","pretty", "equal", "quantile"),
+              palette="BuPu",
+              title=c("Jenks", "Pretty", "Equal", "Quantile"),
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Manufacturing \nCount per MSOA \nCompare Class.",
+          main.title.position = "right",
+          main.title.size=0.9)
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r 
+Comp
+```
+  
+style = jenks identifies groups of similar values in the data and maximizes the differences between categories.
+
+Load 'UK Business Counts - enterprises by industry and employment size band'  
+C : Manufacturing  
+G : Wholesale and retail trade; repair of motor vehicles and motorcycles  
+I : Accommodation and food service activities  
+
+```{r}
+msoaCI <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/msoa_nomis_counts_ind.csv")
+```
+
+Join to MSOAs
+```{r}
+join2 <- append_data(join1, msoaCI, key.shp = "MSOA11CD", key.data = "cd", ignore.duplicates = TRUE, ignore.na = TRUE)
+```
+```{r}
+names(join2)
+```
+
+
+Map of:  
+UK Business Counts - local units by industry and employment size band (1 ind - Manufacturing)  
+UK Business Counts - enterprises by industry and employment size band (3 industries - Man, Ret, Food)
+```{r}
+suma <- tm_shape(join2) +
+    tm_polygons(c("Total",
+                  "C : Manufacturing",
+                  "G : Wholesale and retail trade; repair of motor vehicles and motorcycles",
+                  "I : Accommodation and food service activities"), 
+        style="jenks",
+        palette="PuRd",
+        auto.palette.mapping=FALSE,
+        title=c("Local Units \nManufacturing",
+                "Enterprises \nManufacturing",
+                "Enterprises Retail",
+                "Enterprises \nFood Service"),
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Count per MSOA",
+          main.title.position = "right",
+          main.title.size=0.9)
+suma
+```
+  
+**UK Business Counts - local units by industry and employment size band**
+*An extract compiled from the Inter Departmental Business Register (IDBR) recording the number of Local Units that were live at a reference date in March, broken down by employment size band, detailed industry (5 digit SIC2007) and legal status. Local Units are individual sites that belong to an Enterprise. Available from country down to mid layer super output area and Scottish intermediate zones.*
+
+**UK Business Counts - enterprises by industry and employment size band**
+*An extract compiled from the Inter Departmental Business Register (IDBR) recording the number of Enterprises that were live at a reference date in March, broken down by employment size band, detailed industry (5 digit SIC2007) and legal status. An Enterprise is the smallest combination of legal units which has a certain degree of autonomy within an Enterprise Group. Available from country down to mid layer super output area and Scottish intermediate zones.*
+
+## summary of previous analysis
+
+Choice 2km
+```{r, out.width = "1000px", echo=FALSE}
+knitr::include_graphics("syntax_md_files/figure-markdown_github/unnamed-chunk-12-1.png")
+```
+
+**Percentage Manufacturing** Business Register and Employment Survey : open access
+```{r, out.width = "1000px", echo=FALSE}
+knitr::include_graphics("syntax_md_files/figure-markdown_github/unnamed-chunk-14-1.png")
+```
+
+**Count Manufacturing** Business Register and Employment Survey : open access
+```{r, out.width = "900px", echo=FALSE}
+knitr::include_graphics("c_manu_count.png")
 ```
 
