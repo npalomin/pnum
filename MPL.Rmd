@@ -78,7 +78,7 @@ Histograms
 ```{r}
 # drop ) values
 nom1 <- subset(nom, nom$Count > 0) # 1783
-nom2 <- subset(nom, nom$`Industry percentage` > 0.1) # 1713
+nom2 <- subset(nom, nom$`Industry percentage` > 0) # 1730
 
 # style
 th <- theme_tufte(base_family = "Georgia")
@@ -90,6 +90,22 @@ h4 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill
 grid.arrange(h1, h2, h3, h4, nrow=2)
 ```
 
+Boxpolots
+```{r}
+fnC <- fivenum(nom1$Count)
+fnP <- fivenum(nom2$`Industry percentage`)
+anC <- annotate(geom="text", label=round(fnC ,digits=2), x= 1, y=fnC, size = 3, family = "Georgia", hjust =-.2)
+anP <- annotate(geom="text", label=round(fnP ,digits=2), x= 1, y=fnP, size = 3, family = "Georgia", hjust =-.2)
+th <- theme(axis.title=element_blank(),axis.ticks.x = element_blank(), axis.text.x=element_blank())
+
+bC <- ggplot(nom1, aes(1, Count)) + geom_tufteboxplot() + scale_y_log10() + theme_classic() + anC +
+  ggtitle("Jobs Count (N = 1,783)") + th + theme_tufte()
+bP <- ggplot(nom2, aes(1, `Industry percentage`)) + geom_tufteboxplot() + scale_y_log10() + theme_classic() + anP  + ggtitle("Jobs Percentage (N = 1,730)") + th + theme_tufte()
+
+grid.arrange(bC, bP, nrow=1)
+```
+
+
 Maps
 ```{r, message=FALSE, warning=FALSE}
 lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
@@ -99,5 +115,62 @@ Join with NOMIS data 'nom'
 ```{r}
 mpl <- append_data(lsoa, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", ignore.duplicates = TRUE, ignore.na = TRUE)
 names(mpl)
+```
+
+Map of job counts > 35 & percentage > 6% (4th Q)
+```{r}
+colnames(mpl)[17] <- "IndPer"
+
+c35 <- subset(mpl, Count >= 35)
+p6 <- subset(mpl, IndPer >= 6)
+CP <- subset(mpl, Count >= 35 | IndPer >= 6)
+```
+
+
+```{r}
+mCP <- tm_shape(CP) +
+    tm_polygons(c("Count",
+                  "IndPer"), 
+        style="jenks",
+        palette="PuRd",
+        title=c("Count",
+                "Percentage"),
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Jobs per LSOA",
+          main.title.position = "right",
+          main.title.size=0.9)
+mCP
+```
+
+
+
+```{r}
+colnames(mpl)[17] <- "IndPer"
+
+c35 <- subset(mpl, Count >= 35)
+p6 <- subset(mpl, IndPer >= 6)
+```
+
+```{r}
+msum <- tm_shape(mpl) +
+  tm_polygons(col="#ffffe5", border.col="#ededed", border.alpha = 0.01) + 
+  tm_shape(c35) +
+  tm_polygons("Count",
+              style="jenks",
+              palette="BuPu",
+              title="Jobs Count",
+              border.col="white",
+              border.alpha = 0.1) + 
+  tm_shape(p6) +
+  tm_polygons(border.col = "magenta", border.alpha = 0.5, alpha = 0) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
+```
+
+```{r}
+tmap_mode("plot")
+msum
 ```
 
