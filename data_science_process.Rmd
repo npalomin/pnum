@@ -1,0 +1,28 @@
+---
+title: "Data Science Process"
+output: html_notebook
+---
+
+- Clearly state the problem  
+- Explain the data  
+- Share the struggles of doing the analysis • Do not focus on the algorithms  
+- Show how the analysis progressed, take your readers on a journey  
+- Finish with something remarkable  
+
+##### Summarise Data
+
+###### Central tendency
+- Median  
+- Mean  
+- Mode  
+
+###### Frequency distribution
+- Historgram  
+- Frequency table  
+
+###### Variation or spread
+- Range  
+- Standard deviation  
+- Percentiles
+- Boxplot
+

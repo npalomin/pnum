@@ -1,0 +1,77 @@
+---
+title: "Manufacturing Places in London"
+output: html_notebook
+---
+
+*libraries*
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(ggplot2)
+library(ggthemes)
+library(gridExtra)
+library(knitr)
+library(htmlTable)
+```
+
+##### Problem
+Identify location outside the Industrial designated areas with high concentration of Manufacturing (jobs and businesses), economic activity and residences.
+
+###### Manufacturing jobs
+Data source: NOMIS official labour market statistics (ONS)
+URL: https://www.nomisweb.co.uk/  
+Definition: *"An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007). The survey records a job at the location of an employees workplace. Available from country down to lower level super output area and Scottish datazone."*  
+Ref URLs: https://onsdigital.github.io/dp-classification-tools/standard-industrial-classification/ONS_SIC_hierarchy_view.html  
+
+Read NOMIS data. Lower Layer Super Output Area (2011)  
+Industry Standard industrial classification of economic activities (SIC) 2007 section C: Manufacturing
+```{r message=FALSE, warning=FALSE}
+nom <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/nomis_4835.csv") # 4,835 obs.
+```
+
+Summary of 'nom' Count and Industry percentage
+```{r}
+summary(nom)
+```
+
+```{r}
+table(nom$Count) # 539 LSOA with 10 jobs in Manufacturing Industry
+```
+```{r}
+nrow(table(nom$Count)) # [1] 34
+dCount <-as.data.frame(table(nom$Count))
+colnames(dCount) <-c("Jobs", "Frequency")
+dCount1 <- cbind(dCount[1:10, ], dCount[11:20, ], dCount[21:30, ], dCount[31:40, ])
+htmlTable(dCount1, rnames=F, caption="Jobs count frequency per LSOA (N = 4,835)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+
+```{r}
+table(nom[,3]) # 22 LSOA with 20% jobs in Manufacturing Industry
+```
+
+```{r}
+nrow(table(nom$`Industry percentage`)) # [1] 107
+dInd <-as.data.frame(table(nom$`Industry percentage`))
+colnames(dInd) <-c("Perc.", "Frequency")
+dInd1 <- cbind(dInd[1:22, ], dInd[23:44, ], dInd[45:66, ], dInd[67:88, ], dInd[89:110, ])
+htmlTable(dInd1, rnames=F, caption="Jobs Percentage frequency per LSOA (N = 4,835)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+Histograms
+```{r}
+# drop ) values
+nom1 <- subset(nom, nom$Count > 0) # 1783
+nom2 <- subset(nom, nom$`Industry percentage` > 0.1) # 1713
+
+# style
+th <- theme_tufte(base_family = "Georgia")
+
+h1 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 6000/5, fill="magenta") + th + ylab("LSOAs") + xlab("Jobs")
+h2 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 150/5, fill="magenta") + th + xlim(c(0, 150)) + ylab("LSOAs") + xlab("Jobs")
+h3 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 100, fill="magenta") + th + ylab("LSOAs") + xlab("Ind. Percentage")
+h4 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill="magenta") + th + xlim(c(0, 25)) + ylab("LSOAs") + xlab("Ind. Percentage")
+grid.arrange(h1, h2, h3, h4, nrow=2)
+```
+
+
+
+
