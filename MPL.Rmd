@@ -1,6 +1,8 @@
 ---
 title: "Manufacturing Places in London"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 *libraries*
@@ -10,6 +12,18 @@ library(ggthemes)
 library(gridExtra)
 library(knitr)
 library(htmlTable)
+library(readr)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(spData)
+library(tidyverse)
+library(maptools)
+library(RColorBrewer)
 ```
 
 ##### Problem
@@ -25,6 +39,10 @@ Read NOMIS data. Lower Layer Super Output Area (2011)
 Industry Standard industrial classification of economic activities (SIC) 2007 section C: Manufacturing
 ```{r message=FALSE, warning=FALSE}
 nom <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/nomis_4835.csv") # 4,835 obs.
+```
+Create variable 'lsoa11_cd' from variable 'lsoa11_2011' substract chr 1 to 4 (first 4 characters)
+```{r, message=FALSE, warning=FALSE}
+nom <- mutate(nom, lsoa11_cd = substr(lsoa_2011, 1, 9))
 ```
 
 Summary of 'nom' Count and Industry percentage
@@ -68,10 +86,18 @@ th <- theme_tufte(base_family = "Georgia")
 h1 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 6000/5, fill="magenta") + th + ylab("LSOAs") + xlab("Jobs")
 h2 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 150/5, fill="magenta") + th + xlim(c(0, 150)) + ylab("LSOAs") + xlab("Jobs")
 h3 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 100, fill="magenta") + th + ylab("LSOAs") + xlab("Ind. Percentage")
-h4 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill="magenta") + th + xlim(c(0, 25)) + ylab("LSOAs") + xlab("Ind. Percentage")
+h4 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill="magenta") + th + xlim(c(0, 35)) + ylab("LSOAs") + xlab("Ind. Percentage")
 grid.arrange(h1, h2, h3, h4, nrow=2)
 ```
 
+Maps
+```{r, message=FALSE, warning=FALSE}
+lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
+```
 
-
+Join with NOMIS data 'nom'
+```{r}
+mpl <- append_data(lsoa, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", ignore.duplicates = TRUE, ignore.na = TRUE)
+names(mpl)
+```
 
