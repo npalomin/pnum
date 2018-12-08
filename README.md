@@ -19,6 +19,7 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |`061118`|Openmapping SS v2|file:///Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/nomis_ss_1.html |
 |`061118`|Interactive SSX - Nomis|https://npalomin.github.io/pnum/syntax_interactive.html  |
 |`191118`|IBDR - Map of local units by industry |https://npalomin.github.io/pnum/IDBR.html  |
+|`081218`|GLA-Desiganted Industrial Land|https://npalomin.github.io/pnum/GLA_indLand.html  |
 
 ## Manufacturing Classification schemes reference
 

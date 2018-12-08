@@ -1,0 +1,126 @@
+---
+title: "GLA_Ind_Land_Baseline_2015_Designations.gdb"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
+---
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
+
+
+# Introduction
+Files provided by alex.marsh@london.gov.uk  
+e-mail note:  
+*"Here are the industrial polygons by designation. We won’t make you sign anything but comes with the understanding that this data is just for your immediate research proposal, and that you check in with us if you want to present the data visually (i.e. a map) in any publication"*  
+
+URLs:  
+https://cran.r-project.org/web/packages/gridExtra/vignettes/tableGrob.html  
+
+# Analysis
+## Load data converted to ESRI shp
+*libraries*
+```{r message=FALSE, warning=FALSE, paged.print=TRUE}
+library(sp)
+library(raster)
+library(rgdal)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(gridExtra)
+library(plyr)
+library(knitr)
+library(ggplot2)
+library(GISTools)
+library(grid)
+#install.packages("spdep")
+library(spdep)
+```
+
+```{r}
+ild <- read_shape("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp")
+```
+
+## Attributes Summary (n=104006 obs.)
+```{r}
+summary(ild)
+```
+
+## Frequency Tables
+```{r}
+t1 <- count(ild, vars = "LU_CODE_20")
+t2 <- count(ild, vars = "URSID")
+t3 <- count(ild, vars = "Note")
+t4 <- count(ild, vars = "LU_Code_21")
+t5 <- count(ild, vars = "TYPE_2015")
+
+t1 <- t1[order(-t1$freq),]
+t2 <- t2[order(-t2$freq),]
+t3 <- t3[order(-t3$freq),]
+t4 <- t4[order(-t4$freq),]
+t5 <- t5[order(-t5$freq),]
+
+kable(t1, row.names = F)
+kable(t2, row.names = F)
+kable(t3, row.names = F)
+kable(t4, row.names = F)
+kable(t5, row.names = F)
+```
+
+## Quick Map by Type_2015
+
+Create London basemap from MSOA boundaries
+```{r}
+bmLon <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/MSOA_2011_London_gen_MHW.shp")
+bmLon <-st_union(bmLon)
+qtm(bmLon, fill = "grey90", borders = NULL)
+```
+
+```{r}
+tmap_mode("plot")
+tm_shape(bmLon) +
+  tm_fill(col = "gray95") +
+  tm_shape(ild) +
+  tm_polygons("TYPE_2015",
+              palette="Dark2",
+              title="TYPE_2015",
+              border.col="white",
+              border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F)
+```
+
