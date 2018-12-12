@@ -1,9 +1,46 @@
 ---
-title: "Manufacturing Places in London"
+title: "Manufacturing places in London"
 output:
   html_document:
     df_print: paged
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
 ---
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
 
 *libraries*
 ```{r message=FALSE, warning=FALSE, paged.print=FALSE}
@@ -26,10 +63,32 @@ library(maptools)
 library(RColorBrewer)
 ```
 
-##### Problem
-Identify location outside the Industrial designated areas with high concentration of Manufacturing (jobs and businesses), economic activity and residences.
+# Problem
+Identify zones outside the Industrial Land Designation areas with high concentration of manufacturing, other economic activities and residences.
 
-###### Manufacturing jobs
+# Context
+
+We have analysed 3 open data datasets refering to Manufacturing in London.  
+
+| Name | Source | Comments | General Description | Version |
+| --- | --- | --- | --- | --- |
+| Directory of London Businesses - UK Standard Industrial Classification (SIC) | London Data Store https://data.london.gov.uk | "Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business." "The London cut available to download here, was created using a postcode list... inaccuracies in postcodes may mean that no local authority is listed for a company." | Point data, N = 1,130,474 obs. | May 2018 |
+| Business Register and Employment Survey - BRES | NOMIS - Official Labour Market Statistics ONS https://www.nomisweb.co.uk/ | “An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)" | Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology | 2017 (latest data) | 
+| Inter Departmental Business Register (IDBR) | | "An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status." - "A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace." | Number of workplaces per MSOA (N = 983 obs.) https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi| 2018 (latest data) |
+
+# Cartographic summary
+
+
+
+# Analysis
+
+A detailed analysis was carried out for the BRES dataset due to four reasons:
+1. The number of manufacturing jobs obtained from the BRES dataset is considered the best proxy to represent manufacturing intensity. This measure can be interpreted as a combination of number of manufacturing units and size.  
+2. The level of detail of the BRES dataset at the LSOA area is considered sufficient to allow the selection of case study areas for micro-morphology analysis.  
+3. The SIC dataset despite having a finer-grain resolution has shown innacuracies in the location of the data points (reference: Vyner street case study Cites of Making project).  
+4. Despite the fact that the IDBR considers a larger sample at the national level, it is aggregated at a lower resolution geographic area (MSOA). Also, because according to a data methodological note "it is possible to get multiple business registrations at a single address and this can distort data for smaller geographical areas" (https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf).  
+
+## Metadata
 Data source: NOMIS official labour market statistics (ONS)
 URL: https://www.nomisweb.co.uk/  
 Definition: *"An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007). The survey records a job at the location of an employees workplace. Available from country down to lower level super output area and Scottish datazone."*  
@@ -40,6 +99,8 @@ Industry Standard industrial classification of economic activities (SIC) 2007 se
 ```{r message=FALSE, warning=FALSE}
 nom <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/nomis_4835.csv") # 4,835 obs.
 ```
+
+## Data summary
 Create variable 'lsoa11_cd' from variable 'lsoa11_2011' substract chr 1 to 4 (first 4 characters)
 ```{r, message=FALSE, warning=FALSE}
 nom <- mutate(nom, lsoa11_cd = substr(lsoa_2011, 1, 9))
@@ -51,16 +112,13 @@ summary(nom)
 ```
 
 ```{r}
-table(nom$Count) # 539 LSOA with 10 jobs in Manufacturing Industry
-```
-```{r}
 nrow(table(nom$Count)) # [1] 34
 dCount <-as.data.frame(table(nom$Count))
 colnames(dCount) <-c("Jobs", "Frequency")
 dCount1 <- cbind(dCount[1:10, ], dCount[11:20, ], dCount[21:30, ], dCount[31:40, ])
 htmlTable(dCount1, rnames=F, caption="Jobs count frequency per LSOA (N = 4,835)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
-
+Most LSOAs have 0 jobs in manufacturing. Among the rest the most frequent number is 10 jobs (in 539 LSOAs). High number of jobs ( > 1500) are an exception. 
 
 ```{r}
 table(nom[,3]) # 22 LSOA with 20% jobs in Manufacturing Industry
@@ -73,40 +131,49 @@ colnames(dInd) <-c("Perc.", "Frequency")
 dInd1 <- cbind(dInd[1:22, ], dInd[23:44, ], dInd[45:66, ], dInd[67:88, ], dInd[89:110, ])
 htmlTable(dInd1, rnames=F, caption="Jobs Percentage frequency per LSOA (N = 4,835)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
+Most LSOAs have 0 jobs in manufacturing. Among the rest the most frequent percentage is 5% (in 102 LSOAs). High percentage of jobs ( > 53%) are an exception.
 
-Histograms
+## Histograms
 ```{r}
-# drop ) values
-nom1 <- subset(nom, nom$Count > 0) # 1783
-nom2 <- subset(nom, nom$`Industry percentage` > 0) # 1730
+# drop 0 values
+nom1 <- subset(nom, nom$Count > 0 & nom$`Industry percentage` > 0) # 1730
+```
 
+Summary of values > 0  
+```{r}
+summary(nom1)
+```
+
+```{r}
 # style
 th <- theme_tufte(base_family = "Georgia")
 
-h1 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 6000/5, fill="magenta") + th + ylab("LSOAs") + xlab("Jobs")
-h2 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 150/5, fill="magenta") + th + xlim(c(0, 150)) + ylab("LSOAs") + xlab("Jobs")
-h3 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 100, fill="magenta") + th + ylab("LSOAs") + xlab("Ind. Percentage")
-h4 <- ggplot(nom2, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill="magenta") + th + xlim(c(0, 35)) + ylab("LSOAs") + xlab("Ind. Percentage")
+h1 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 6000/5, fill="magenta") + th + ylab("LSOAs") + xlab("Jobs count")
+h2 <- ggplot(nom1, aes(Count)) + geom_histogram(bins = 150/5, fill="magenta") + th + xlim(c(0, 150)) + ylab("LSOAs") + xlab("Jobs count (0-150)")
+h3 <- ggplot(nom1, aes(`Industry percentage`)) + geom_histogram(bins = 100, fill="magenta") + th + ylab("LSOAs") + xlab("% of jobs in Manufacturing")
+h4 <- ggplot(nom1, aes(`Industry percentage`)) + geom_histogram(bins = 200, fill="magenta") + th + xlim(c(0, 35)) + ylab("LSOAs") + xlab("% of jobs in Manufacturing (0-35%)")
 grid.arrange(h1, h2, h3, h4, nrow=2)
 ```
 
-Boxpolots
+## Boxpolots
 ```{r}
 fnC <- fivenum(nom1$Count)
-fnP <- fivenum(nom2$`Industry percentage`)
+fnP <- fivenum(nom1$`Industry percentage`)
+```
+
+```{r}
 anC <- annotate(geom="text", label=round(fnC ,digits=2), x= 1, y=fnC, size = 3, family = "Georgia", hjust =-.2)
 anP <- annotate(geom="text", label=round(fnP ,digits=2), x= 1, y=fnP, size = 3, family = "Georgia", hjust =-.2)
 th <- theme(axis.title=element_blank(),axis.ticks.x = element_blank(), axis.text.x=element_blank())
 
 bC <- ggplot(nom1, aes(1, Count)) + geom_tufteboxplot() + scale_y_log10() + theme_classic() + anC +
-  ggtitle("Jobs Count (N = 1,783)") + th + theme_tufte()
-bP <- ggplot(nom2, aes(1, `Industry percentage`)) + geom_tufteboxplot() + scale_y_log10() + theme_classic() + anP  + ggtitle("Jobs Percentage (N = 1,730)") + th + theme_tufte()
+  ggtitle("Jobs Count (N = 1,730)") + th + theme_tufte()
+bP <- ggplot(nom1, aes(1, `Industry percentage`)) + geom_tufteboxplot() + scale_y_log10() + theme_classic() + anP  + ggtitle("Jobs Percentage (N = 1,730)") + th + theme_tufte()
 
 grid.arrange(bC, bP, nrow=1)
 ```
 
-
-Maps
+## Maps
 ```{r, message=FALSE, warning=FALSE}
 lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
 ```
@@ -117,47 +184,57 @@ mpl <- append_data(lsoa, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", igno
 names(mpl)
 ```
 
-Map of job counts > 35 & percentage > 6% (4th Q)
+Maps of job Counts > 40 and Percentage > 6% (> 3rd Q)
 ```{r}
+# change column name
 colnames(mpl)[17] <- "IndPer"
 
-c35 <- subset(mpl, Count >= 35)
-p6 <- subset(mpl, IndPer >= 6)
-CP <- subset(mpl, Count >= 35 | IndPer >= 6)
+c40 <- subset(mpl, Count >= 40) # 439 obs.
+p6 <- subset(mpl, IndPer >= 6) # 434 obs.
+# CP <- subset(mpl, Count >= 40 | IndPer >= 6)
 ```
 
 
 ```{r}
-mCP <- tm_shape(CP) +
-    tm_polygons(c("Count",
-                  "IndPer"), 
+mc40 <- tm_shape(c40) +
+    tm_polygons("Count", 
         style="jenks",
         palette="PuRd",
-        title=c("Count",
-                "Percentage"),
+        title= "Count",
         border.col="white",
         border.alpha = 0.1) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
   tm_legend(legend.position = c("right", "bottom"),
-          main.title = "Jobs per LSOA",
+          main.title = "Jobs Count > 3rd Q (N=439 obs.)",
           main.title.position = "right",
           main.title.size=0.9)
-mCP
+mc40
 ```
 
-
+```{r}
+mp6 <- tm_shape(p6) +
+    tm_polygons("IndPer", 
+        style="jenks",
+        palette="BuPu",
+        title= "Percentage",
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Jobs Percentage > 3rd Q (N=434 obs.)",
+          main.title.position = "right",
+          main.title.size=0.9)
+mp6
+```
 
 ```{r}
-colnames(mpl)[17] <- "IndPer"
-
-c35 <- subset(mpl, Count >= 35)
-p6 <- subset(mpl, IndPer >= 6)
+tmap_arrange(mc40 ,mp6 , nrow=1)
 ```
 
 ```{r}
 msum <- tm_shape(mpl) +
   tm_polygons(col="#ffffe5", border.col="#ededed", border.alpha = 0.01) + 
-  tm_shape(c35) +
+  tm_shape(c40) +
   tm_polygons("Count",
               style="jenks",
               palette="BuPu",
@@ -172,5 +249,25 @@ msum <- tm_shape(mpl) +
 ```{r}
 tmap_mode("plot")
 msum
+```
+
+Select values with both conditions Count >= 40 & IndPer >= 6
+```{r}
+CP <- subset(mpl, Count >= 40 & IndPer >= 6) # 253 obs.
+mCP <- tm_shape(CP) +
+    tm_polygons(c("Count",
+                  "IndPer"), 
+        style="jenks",
+        palette=list("PuRd","BuPu"),
+        title=c("Count",
+                "Percentage"),
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Jobs/Percentage > 3rd Q (N=253 obs.)",
+          main.title.position = "right",
+          main.title.size=0.9)
+mCP
 ```
 
