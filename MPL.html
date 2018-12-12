@@ -215,37 +215,45 @@ library(RColorBrewer)</code></pre>
 <tbody>
 <tr class="odd">
 <td>Directory of London Businesses - UK Standard Industrial Classification (SIC)</td>
-<td>London Data Store <a href="https://data.london.gov.uk" class="uri">https://data.london.gov.uk</a></td>
+<td>London Data Store (1)</td>
 <td>“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”</td>
 <td>Point data, N = 1,130,474 obs.</td>
 <td>May 2018</td>
 </tr>
 <tr class="even">
 <td>Business Register and Employment Survey - BRES</td>
-<td>NOMIS - Official Labour Market Statistics ONS <a href="https://www.nomisweb.co.uk/" class="uri">https://www.nomisweb.co.uk/</a></td>
+<td>NOMIS - Official Labour Market Statistics ONS (2)</td>
 <td>“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”</td>
-<td>Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) <a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology" class="uri">https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology</a></td>
+<td>Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3)</td>
 <td>2017 (latest data)</td>
 </tr>
 <tr class="odd">
 <td>Inter Departmental Business Register (IDBR)</td>
 <td></td>
 <td>“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”</td>
-<td>Number of workplaces per MSOA (N = 983 obs.) <a href="https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr" class="uri">https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr</a> <a href="https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi" class="uri">https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi</a></td>
+<td>Number of workplaces per MSOA (N = 983 obs.) (4)</td>
 <td>2018 (latest data)</td>
 </tr>
 </tbody>
 </table>
+<p>URLs:<br />
+1 <a href="https://data.london.gov.uk" class="uri">https://data.london.gov.uk</a><br />
+2 <a href="https://www.nomisweb.co.uk/" class="uri">https://www.nomisweb.co.uk/</a><br />
+3 <a href="https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology" class="uri">https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology</a><br />
+4 <a href="https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr" class="uri">https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr</a> <a href="https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi" class="uri">https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi</a></p>
 </div>
 <div id="cartographic-summary" class="section level1">
 <h1><span class="header-section-number">3</span> Cartographic summary</h1>
 </div>
 <div id="analysis" class="section level1">
 <h1><span class="header-section-number">4</span> Analysis</h1>
-<p>A detailed analysis was carried out for the BRES dataset due to four reasons: 1. The number of manufacturing jobs obtained from the BRES dataset is considered the best proxy to represent manufacturing intensity. This measure can be interpreted as a combination of number of manufacturing units and size.<br />
-2. The level of detail of the BRES dataset at the LSOA area is considered sufficient to allow the selection of case study areas for micro-morphology analysis.<br />
-3. The SIC dataset despite having a finer-grain resolution has shown innacuracies in the location of the data points (reference: Vyner street case study Cites of Making project).<br />
-4. Despite the fact that the IDBR considers a larger sample at the national level, it is aggregated at a lower resolution geographic area (MSOA). Also, because according to a data methodological note “it is possible to get multiple business registrations at a single address and this can distort data for smaller geographical areas” (<a href="https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf" class="uri">https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf</a>).</p>
+<p>A detailed analysis was carried out for the BRES dataset due to four reasons:</p>
+<ol style="list-style-type: decimal">
+<li><p>The number of manufacturing jobs obtained from the BRES dataset is considered the best proxy to represent manufacturing intensity. This measure can be interpreted as a combination of number of manufacturing units and size.</p></li>
+<li><p>The level of detail of the BRES dataset at the LSOA area is considered sufficient to allow the selection of case study areas for micro-morphology analysis.</p></li>
+<li><p>The SIC dataset despite having a finer-grain resolution has shown innacuracies in the location of the data points (reference: Vyner street case study Cites of Making project).</p></li>
+<li><p>Despite the fact that the IDBR considers a larger sample at the national level, it is aggregated at a lower resolution geographic area (MSOA). Also, because according to a data methodological note “it is possible to get multiple business registrations at a single address and this can distort data for smaller geographical areas” (<a href="https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf" class="uri">https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf</a>).</p></li>
+</ol>
 <div id="metadata" class="section level2">
 <h2><span class="header-section-number">4.1</span> Metadata</h2>
 <p>Data source: NOMIS official labour market statistics (ONS) URL: <a href="https://www.nomisweb.co.uk/" class="uri">https://www.nomisweb.co.uk/</a><br />

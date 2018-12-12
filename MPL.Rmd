@@ -72,9 +72,15 @@ We have analysed 3 open data datasets refering to Manufacturing in London.
 
 | Name | Source | Comments | General Description | Version |
 | --- | --- | --- | --- | --- |
-| Directory of London Businesses - UK Standard Industrial Classification (SIC) | London Data Store https://data.london.gov.uk | "Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business." "The London cut available to download here, was created using a postcode list... inaccuracies in postcodes may mean that no local authority is listed for a company." | Point data, N = 1,130,474 obs. | May 2018 |
-| Business Register and Employment Survey - BRES | NOMIS - Official Labour Market Statistics ONS https://www.nomisweb.co.uk/ | “An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)" | Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology | 2017 (latest data) | 
-| Inter Departmental Business Register (IDBR) | | "An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status." - "A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace." | Number of workplaces per MSOA (N = 983 obs.) https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi| 2018 (latest data) |
+| Directory of London Businesses - UK Standard Industrial Classification (SIC) | London Data Store (1)| "Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business." "The London cut available to download here, was created using a postcode list... inaccuracies in postcodes may mean that no local authority is listed for a company." | Point data, N = 1,130,474 obs. | May 2018 |
+| Business Register and Employment Survey - BRES | NOMIS - Official Labour Market Statistics ONS (2) | “An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)" | Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3) | 2017 (latest data) | 
+| Inter Departmental Business Register (IDBR) | | "An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status." - "A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace." | Number of workplaces per MSOA (N = 983 obs.) (4) | 2018 (latest data) |
+
+URLs:  
+1 https://data.london.gov.uk   
+2 https://www.nomisweb.co.uk/  
+3 https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/bulletins/businessregisterandemploymentsurveybresprovisionalresults/provisionalresults2017revisedresults2016#quality-and-methodology  
+4 https://www.ons.gov.uk/aboutus/whatwedo/paidservices/interdepartmentalbusinessregisteridbr https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi  
 
 # Cartographic summary
 
@@ -82,10 +88,14 @@ We have analysed 3 open data datasets refering to Manufacturing in London.
 
 # Analysis
 
-A detailed analysis was carried out for the BRES dataset due to four reasons:
+A detailed analysis was carried out for the BRES dataset due to four reasons:  
+
 1. The number of manufacturing jobs obtained from the BRES dataset is considered the best proxy to represent manufacturing intensity. This measure can be interpreted as a combination of number of manufacturing units and size.  
+
 2. The level of detail of the BRES dataset at the LSOA area is considered sufficient to allow the selection of case study areas for micro-morphology analysis.  
+
 3. The SIC dataset despite having a finer-grain resolution has shown innacuracies in the location of the data points (reference: Vyner street case study Cites of Making project).  
+
 4. Despite the fact that the IDBR considers a larger sample at the national level, it is aggregated at a lower resolution geographic area (MSOA). Also, because according to a data methodological note "it is possible to get multiple business registrations at a single address and this can distort data for smaller geographical areas" (https://www.ons.gov.uk/businessindustryandtrade/business/activitysizeandlocation/methodologies/ukbusinessactivitysizeandlocationqmi/pdf).  
 
 ## Metadata
