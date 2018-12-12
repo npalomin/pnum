@@ -169,6 +169,9 @@ h5{
 h6{
     font-size: 90%
 }
+table {
+  width: 100%;
+}
 </style>
 <p><em>libraries</em></p>
 <pre class="r"><code>library(ggplot2)
@@ -195,44 +198,79 @@ library(RColorBrewer)</code></pre>
 <div id="context" class="section level1">
 <h1><span class="header-section-number">2</span> Context</h1>
 <p>We have analysed 3 open data datasets refering to Manufacturing in London.</p>
-<table style="width:28%;">
-<colgroup>
-<col width="5%"></col>
-<col width="5%"></col>
-<col width="5%"></col>
-<col width="5%"></col>
-<col width="5%"></col>
-</colgroup>
+<pre class="r"><code>sT &lt;- data.frame(Name, Source, Observation, General_Desc, Version)
+htmlTable(sT, rnames=F, align=&quot;l&quot;, col.columns = c(&quot;none&quot;, &quot;#F7F7F7&quot;), css.cell=&quot;padding:1em&quot;)</code></pre>
+<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
 <thead>
-<tr class="header">
-<th>Name</th>
-<th>Source</th>
-<th>Comments</th>
-<th>General Description</th>
-<th>Version</th>
+<tr>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Name
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Source
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Observation
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+General_Desc
+</th>
+<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
+Version
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td>Directory of London Businesses - UK Standard Industrial Classification (SIC)</td>
-<td>London Data Store (1)</td>
-<td>“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”</td>
-<td>Point data, N = 1,130,474 obs.</td>
-<td>May 2018</td>
+<tr>
+<td style="padding:1em; text-align: left;">
+Directory of London Businesses - UK Standard Industrial Classification (SIC)
+</td>
+<td style="padding:1em; text-align: left; background-color: #f7f7f7;">
+London Data Store (1)
+</td>
+<td style="padding:1em; text-align: left;">
+“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”
+</td>
+<td style="padding:1em; text-align: left; background-color: #f7f7f7;">
+Point data, N = 1,130,474 obs.
+</td>
+<td style="padding:1em; text-align: left;">
+May 2018
+</td>
 </tr>
-<tr class="even">
-<td>Business Register and Employment Survey - BRES</td>
-<td>NOMIS - Official Labour Market Statistics ONS (2)</td>
-<td>“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”</td>
-<td>Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3)</td>
-<td>2017 (latest data)</td>
+<tr>
+<td style="padding:1em; text-align: left;">
+Business Register and Employment Survey - BRES
+</td>
+<td style="padding:1em; text-align: left; background-color: #f7f7f7;">
+NOMIS - Official Labour Market Statistics ONS (2)
+</td>
+<td style="padding:1em; text-align: left;">
+“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”
+</td>
+<td style="padding:1em; text-align: left; background-color: #f7f7f7;">
+Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3)
+</td>
+<td style="padding:1em; text-align: left;">
+2017 (latest data)
+</td>
 </tr>
-<tr class="odd">
-<td>Inter Departmental Business Register (IDBR)</td>
-<td></td>
-<td>“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”</td>
-<td>Number of workplaces per MSOA (N = 983 obs.) (4)</td>
-<td>2018 (latest data)</td>
+<tr>
+<td style="padding:1em; border-bottom: 2px solid grey; text-align: left;">
+Inter Departmental Business Register (IDBR)
+</td>
+<td style="padding:1em; border-bottom: 2px solid grey; text-align: left; background-color: #f7f7f7;">
+NOMIS - Official Labour Market Statistics ONS
+</td>
+<td style="padding:1em; border-bottom: 2px solid grey; text-align: left;">
+“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”
+</td>
+<td style="padding:1em; border-bottom: 2px solid grey; text-align: left; background-color: #f7f7f7;">
+Number of workplaces per MSOA (N = 983 obs.) (4)
+</td>
+<td style="padding:1em; border-bottom: 2px solid grey; text-align: left;">
+2018 (latest data)
+</td>
 </tr>
 </tbody>
 </table>
@@ -1340,7 +1378,7 @@ Frequency
 </tr>
 </tbody>
 </table>
-<p>Most LSOAs have 0 jobs in manufacturing. Among the rest the most frequent percentage is 5% (in 102 LSOAs). High percentage of jobs ( &gt; 53%) are an exception.</p>
+<p>Most LSOAs have 0% jobs in manufacturing. Among the rest the most frequent percentage is 5% (in 102 LSOAs). High percentage of jobs ( &gt; 53%) are an exception.</p>
 </div>
 <div id="histograms" class="section level2">
 <h2><span class="header-section-number">4.3</span> Histograms</h2>

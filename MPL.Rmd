@@ -40,6 +40,9 @@ h5{
 h6{
     font-size: 90%
 }
+table {
+  width: 100%;
+}
 </style>
 
 *libraries*
@@ -70,11 +73,18 @@ Identify zones outside the Industrial Land Designation areas with high concentra
 
 We have analysed 3 open data datasets refering to Manufacturing in London.  
 
-| Name | Source | Comments | General Description | Version |
-| --- | --- | --- | --- | --- |
-| Directory of London Businesses - UK Standard Industrial Classification (SIC) | London Data Store (1)| "Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business." "The London cut available to download here, was created using a postcode list... inaccuracies in postcodes may mean that no local authority is listed for a company." | Point data, N = 1,130,474 obs. | May 2018 |
-| Business Register and Employment Survey - BRES | NOMIS - Official Labour Market Statistics ONS (2) | “An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)" | Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3) | 2017 (latest data) | 
-| Inter Departmental Business Register (IDBR) | | "An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status." - "A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace." | Number of workplaces per MSOA (N = 983 obs.) (4) | 2018 (latest data) |
+```{r include=FALSE}
+Name <- c('Directory of London Businesses - UK Standard Industrial Classification (SIC)','Business Register and Employment Survey - BRES','Inter Departmental Business Register (IDBR)')
+Source <- c('London Data Store (1)','NOMIS - Official Labour Market Statistics ONS (2)','NOMIS - Official Labour Market Statistics ONS')
+Observation <- c('“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”','“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”','“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”')
+General_Desc <- c('Point data, N = 1,130,474 obs.','Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3)','Number of workplaces per MSOA (N = 983 obs.) (4)')
+Version <- c('May 2018','2017 (latest data)','2018 (latest data)')
+```
+
+```{r include=FALSE}
+sT <- data.frame(Name, Source, Observation, General_Desc, Version)
+htmlTable(sT, rnames=F, align="l", col.columns = c("none", "#F7F7F7"), css.cell="padding:1em")
+```
 
 URLs:  
 1 https://data.london.gov.uk   
@@ -141,7 +151,7 @@ colnames(dInd) <-c("Perc.", "Frequency")
 dInd1 <- cbind(dInd[1:22, ], dInd[23:44, ], dInd[45:66, ], dInd[67:88, ], dInd[89:110, ])
 htmlTable(dInd1, rnames=F, caption="Jobs Percentage frequency per LSOA (N = 4,835)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
-Most LSOAs have 0 jobs in manufacturing. Among the rest the most frequent percentage is 5% (in 102 LSOAs). High percentage of jobs ( > 53%) are an exception.
+Most LSOAs have 0% jobs in manufacturing. Among the rest the most frequent percentage is 5% (in 102 LSOAs). High percentage of jobs ( > 53%) are an exception.
 
 ## Histograms
 ```{r}
