@@ -113,7 +113,7 @@ qtm(bmLon, fill = "grey90", borders = NULL)
 
 ```{r}
 tmap_mode("plot")
-tm_shape(bmLon) +
+ILDm <- tm_shape(bmLon) +
   tm_fill(col = "gray95") +
   tm_shape(ild) +
   tm_polygons("TYPE_2015",
@@ -122,5 +122,16 @@ tm_shape(bmLon) +
               border.col="white",
               border.alpha = 0.1) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F)
+ILDm
+```
+Interactive Map
+```{r}
+# ILDm.i <- ILDm
+# tmap_mode("view")
+# ILDm.i
+```
+
+```{r}
+# tmap_save(ILDm.i, "ildm.html")
 ```
 

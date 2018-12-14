@@ -64,10 +64,19 @@ library(spData)
 library(tidyverse)
 library(maptools)
 library(RColorBrewer)
+library(plyr)
+#install.packages("reshape")
+library(reshape)
+library(classInt)
+#install.packages("BAMMtools")
+library(BAMMtools)
+#install.packages("psych")
+library(psych)
+library(data.table)
 ```
 
 # Problem
-Identify zones outside the Industrial Land Designation areas with high concentration of manufacturing, other economic activities and residences.
+Identify locations outside the Industrial Land Designation areas with high concentration of manufacturing, other economic activities and residences.
 
 # Context
 
@@ -198,6 +207,13 @@ grid.arrange(bC, bP, nrow=1)
 lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/LSOA_2011_London_gen_MHW.shp")
 ```
 
+Create gray London basemap
+```{r echo=FALSE}
+gLon <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/MSOA_2011_London_gen_MHW.shp")
+gLonC <-st_combine(gLon)
+qtm(gLonC, fill = "grey90", borders = NULL)
+```
+
 Join with NOMIS data 'nom'
 ```{r}
 mpl <- append_data(lsoa, nom, key.shp = "LSOA11CD", key.data = "lsoa11_cd", ignore.duplicates = TRUE, ignore.na = TRUE)
@@ -215,34 +231,40 @@ p6 <- subset(mpl, IndPer >= 6) # 434 obs.
 ```
 
 
-```{r}
-mc40 <- tm_shape(c40) +
+```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
+mc40 <- tm_shape(gLonC) +
+  tm_fill(col = "gray95") +
+  tm_shape(c40) +
     tm_polygons("Count", 
         style="jenks",
         palette="PuRd",
         title= "Count",
         border.col="white",
-        border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
-  tm_legend(legend.position = c("right", "bottom"),
-          main.title = "Jobs Count > 3rd Q (N=439 obs.)",
-          main.title.position = "right",
+        border.alpha = 0.1,
+        legend.hist = T) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F, 
+            legend.outside = T, legend.outside.position = "bottom", legend.stack = "horizontal", legend.hist.width = 3, legend.hist.height = 0.8) +
+  tm_legend(main.title = "Jobs Count > 3rd Q (N=439 obs.)",
+          main.title.position = "left",
           main.title.size=0.9)
 mc40
 ```
 
-```{r}
-mp6 <- tm_shape(p6) +
+```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
+mp6 <- tm_shape(gLonC) +
+  tm_fill(col = "gray95") + 
+  tm_shape(p6) +
     tm_polygons("IndPer", 
         style="jenks",
         palette="BuPu",
         title= "Percentage",
         border.col="white",
-        border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
-  tm_legend(legend.position = c("right", "bottom"),
-          main.title = "Jobs Percentage > 3rd Q (N=434 obs.)",
-          main.title.position = "right",
+        border.alpha = 0.1,
+        legend.hist = T) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F, 
+            legend.outside = T, legend.outside.position = "bottom", legend.stack = "horizontal", legend.hist.width = 3, legend.hist.height = 0.8) +
+  tm_legend(main.title = "Jobs Percentage > 3rd Q (N=434 obs.)",
+          main.title.position = "left",
           main.title.size=0.9)
 mp6
 ```
@@ -250,6 +272,7 @@ mp6
 ```{r}
 tmap_arrange(mc40 ,mp6 , nrow=1)
 ```
+A visual comparison shows that LSOAs with high number of jobs in some cases is coincident with LSOAs with high percentage of jobs. Both meaures might be indicators of 'manufacturing intensity'.
 
 ```{r}
 msum <- tm_shape(mpl) +
@@ -260,19 +283,35 @@ msum <- tm_shape(mpl) +
               palette="BuPu",
               title="Jobs Count",
               border.col="white",
-              border.alpha = 0.1) + 
+              border.alpha = 0.1,
+              alpha = 0.5) + 
   tm_shape(p6) +
-  tm_polygons(border.col = "magenta", border.alpha = 0.5, alpha = 0) +
+  tm_polygons(border.col = "magenta", 
+              border.alpha = 0.5, 
+              alpha = 0,
+              popup.vars= c("Count" ,"IndPer")) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
 ```
 
-```{r}
+```{r fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 msum
 ```
 
-Select values with both conditions Count >= 40 & IndPer >= 6
+Interactive Map
 ```{r}
+#msum.i <- msum
+#tmap_mode("view")
+#msum.i
+```
+
+```{r}
+#tmap_save(msum.i, "msum.html")
+```
+
+
+The selection of values with both conditions Count >= 40 & IndPer >= 6 shows 253 obs.
+```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
 CP <- subset(mpl, Count >= 40 & IndPer >= 6) # 253 obs.
 mCP <- tm_shape(CP) +
     tm_polygons(c("Count",
@@ -285,9 +324,141 @@ mCP <- tm_shape(CP) +
         border.alpha = 0.1) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
   tm_legend(legend.position = c("right", "bottom"),
-          main.title = "Jobs/Percentage > 3rd Q (N=253 obs.)",
-          main.title.position = "right",
+          main.title = "Jobs and Percentage > 3rd Q (N=253 obs.)",
+          main.title.position = "center",
           main.title.size=0.9)
 mCP
 ```
+
+### Industrial Land 2015
+
+```{r}
+ild <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp")
+```
+
+Summary of 'ild' (n=104006 obs.)
+```{r}
+summary(ild)
+```
+
+Largest area is near 81 ha and 1st Qu goes from 0 to 18 sqm. (sqm to ha = divide by 10k)
+Frequency by type ('TYPE_2015')  
+```{r}
+t5 <- count(ild, vars = "TYPE_2015")
+
+htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+Shape area summary by Type
+```{r}
+library(purrr)
+typeSUM <- ild %>% split(.$TYPE_2015) %>% map(summary)
+```
+
+```{r}
+class(ild)
+ilddf <- st_set_geometry(ild, NULL)
+
+```
+
+```{r}
+tSu <- ilddf[, c(8,15)] %>%
+  group_by(TYPE_2015) %>%
+  summarise_if(
+    is.numeric,
+    funs(mean = mean, median = median, min = min, max = max, sd = sd) 
+  )
+```
+
+```{r}
+round_df <- function(x, digits) {
+    # round all numeric variables
+    # x: data frame 
+    # digits: number of digits to round
+    numeric_columns <- sapply(x, mode) == 'numeric'
+    x[numeric_columns] <-  round(x[numeric_columns], digits)
+    x
+}
+
+tSu <- cbind(tSu[,1], round_df(tSu[,2:5], 2))
+```
+
+
+```{r}
+htmlTable(tSu, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+Analyse area distributuon by type
+```{r}
+ilddfT <- ilddf[,c(8,15)] 
+tyS <- t(sapply(
+  by(
+    ilddfT$Shape_Area, list(ilddfT$TYPE_2015), cut, dig.lab=10,breaks=c(-Inf,5,30,100,500,5000,20000,Inf)),
+  table))
+tyS <- as.data.frame(tyS)
+# add row with Totals
+tyS <- rbind(tyS, colSums(tyS))
+attr(tyS, "row.names")[4] <- "Total"
+tyS
+
+```
+
+```{r}
+htmlTable(tyS, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+
+```{r}
+# faster function than ClassInt to calculate classes
+jenks7 <- getJenksBreaks(ilddfT$Shape_Area, 8)
+
+jenks7 <- round(jenks7)
+
+tyS1 <- t(sapply(
+  by(
+    ilddfT$Shape_Area, list(ilddfT$TYPE_2015), cut, dig.lab=10, breaks=jenks7),
+  table))
+tyS1 <- as.data.frame(tyS1)
+
+# add row with Totals
+tyS1 <- rbind(tyS1, colSums(tyS1))
+attr(tyS1, "row.names")[4] <- "Total"
+
+htmlTable(tyS1, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+```
+
+```{r}
+# "URSID" = ' ' (N=26,876 obs.) 
+# read from Statistical Summary for 'Shape_Area' in QGIS
+
+noCode <- read.clipboard(header = TRUE)
+noCode1 <- noCode
+htmlTable(noCode1, rnames=F, caption="'Shape_Area' empty URSID", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+
+
+```
+
+Sample of "URSID" = ' ' (N=26,876 obs.) by 'TYPE_2015'
+```{r, out.width = "1000px", echo=FALSE}
+knitr::include_graphics("noCode_IndLandDes.png")
+```
+
+26,640 obs. (out of N=26,876 obs.) are 'NAL' 'TYPE_2015' (see AECOM map for meaning of NAL - might be Non-designated Sites which although are part of the 'GLA-Desiganted Industrial Land' dataset). The absence of 'URSID' code might be related to being 'Non-designated Sites'. However, there're 'big' sites of 'LSIS' and 'SIL' type without URSID code. Also, there might be uncoded 'NAL' type areas that have the potential of being classified as 'LSIS' or 'SIL'. The size of the area might be a factor to consider.  
+How is the size of the uncoded sites distributed according to 'TYPE_2015'?
+
+```{r}
+# subset URSID = ''
+noURSID <- subset(ilddf, is.na(URSID))
+noURSID <- noURSID[,c(8,15)]
+noUT <- t(sapply(
+  by(
+    noURSID$Shape_Area, list(noURSID$TYPE_2015), cut, dig.lab=10,breaks=c(-Inf,5,30,100,500,5000,20000,Inf)),
+  table))
+noUT
+
+```
+
+
+
+
 
