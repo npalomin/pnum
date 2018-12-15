@@ -111,7 +111,7 @@ bmLon <-st_union(bmLon)
 qtm(bmLon, fill = "grey90", borders = NULL)
 ```
 
-```{r}
+```{r fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 ILDm <- tm_shape(bmLon) +
   tm_fill(col = "gray95") +

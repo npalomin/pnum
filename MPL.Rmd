@@ -424,7 +424,7 @@ tyS1 <- as.data.frame(tyS1)
 tyS1 <- rbind(tyS1, colSums(tyS1))
 attr(tyS1, "row.names")[4] <- "Total"
 
-htmlTable(tyS1, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+htmlTable(tyS1, caption="Industrial Land Type Area Distribution (natural breaks)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
 
 ```{r}
@@ -443,7 +443,7 @@ Sample of "URSID" = ' ' (N=26,876 obs.) by 'TYPE_2015'
 knitr::include_graphics("noCode_IndLandDes.png")
 ```
 
-26,640 obs. (out of N=26,876 obs.) are 'NAL' 'TYPE_2015' (see AECOM map for meaning of NAL - might be Non-designated Sites which although are part of the 'GLA-Desiganted Industrial Land' dataset). The absence of 'URSID' code might be related to being 'Non-designated Sites'. However, there're 'big' sites of 'LSIS' and 'SIL' type without URSID code. Also, there might be uncoded 'NAL' type areas that have the potential of being classified as 'LSIS' or 'SIL'. The size of the area might be a factor to consider.  
+26,640 obs. (out of N=26,876 obs.) are 'NAL' 'TYPE_2015' (see AECOM map for meaning of NAL - might be Non-designated Sites, eventhough they are part of the 'GLA-Desiganted Industrial Land' dataset). The absence of 'URSID' code might be related to being 'Non-designated Sites'. However, there're 'big' sites of 'LSIS' and 'SIL' type without URSID code. Also, there might be uncoded 'NAL' type areas that have the potential of being classified as 'LSIS' or 'SIL'. The size of the area might be a factor to consider.  
 How is the size of the uncoded sites distributed according to 'TYPE_2015'?
 
 ```{r}
