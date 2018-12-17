@@ -2,10 +2,9 @@
 title: "Manufacturing places in London"
 output:
   html_document:
-    df_print: paged
-    toc: yes
-    toc_depth: '3'
     number_sections: yes
+    self_contained: no
+    toc: yes
   html_notebook:
     number_sections: yes
     toc: yes
@@ -45,8 +44,7 @@ table {
 }
 </style>
 
-*libraries*
-```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 library(ggplot2)
 library(ggthemes)
 library(gridExtra)
@@ -73,6 +71,7 @@ library(BAMMtools)
 #install.packages("psych")
 library(psych)
 library(data.table)
+library(viridis)
 ```
 
 # Problem
@@ -90,7 +89,7 @@ General_Desc <- c('Point data, N = 1,130,474 obs.','Estimated number of jobs per
 Version <- c('May 2018','2017 (latest data)','2018 (latest data)')
 ```
 
-```{r include=FALSE}
+```{r echo=FALSE}
 sT <- data.frame(Name, Source, Observation, General_Desc, Version)
 htmlTable(sT, rnames=F, align="l", col.columns = c("none", "#F7F7F7"), css.cell="padding:1em")
 ```
@@ -103,9 +102,16 @@ URLs:
 
 # Cartographic summary
 
+London Businesses Directory  
+https://npalomin.github.io/pnum/fame_rev.html  
 
+Manufacturing Jobs percentage per LSOA  
+https://github.com/npalomin/pnum/blob/master/ss_lsoa_light.md  
 
-# Analysis
+Local Units and Enterprises Count per LSOA  
+https://npalomin.github.io/pnum/IDBR.html  
+
+# Analysis of BRES
 
 A detailed analysis was carried out for the BRES dataset due to four reasons:  
 
@@ -124,23 +130,23 @@ Definition: *"An employer survey of the number of jobs held by employees broken 
 Ref URLs: https://onsdigital.github.io/dp-classification-tools/standard-industrial-classification/ONS_SIC_hierarchy_view.html  
 
 Read NOMIS data. Lower Layer Super Output Area (2011)  
-Industry Standard industrial classification of economic activities (SIC) 2007 section C: Manufacturing
+Industry Standard industrial classification of economic activities (SIC) 2007 section C: Manufacturing  
 ```{r message=FALSE, warning=FALSE}
 nom <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/nomis_4835.csv") # 4,835 obs.
 ```
 
-## Data summary
+## Data summary  
 Create variable 'lsoa11_cd' from variable 'lsoa11_2011' substract chr 1 to 4 (first 4 characters)
 ```{r, message=FALSE, warning=FALSE}
 nom <- mutate(nom, lsoa11_cd = substr(lsoa_2011, 1, 9))
 ```
 
-Summary of 'nom' Count and Industry percentage
+Summary of 'nom' Count and Industry percentage  
 ```{r}
 summary(nom)
 ```
 
-```{r}
+```{r echo=FALSE}
 nrow(table(nom$Count)) # [1] 34
 dCount <-as.data.frame(table(nom$Count))
 colnames(dCount) <-c("Jobs", "Frequency")
@@ -149,11 +155,11 @@ htmlTable(dCount1, rnames=F, caption="Jobs count frequency per LSOA (N = 4,835)"
 ```
 Most LSOAs have 0 jobs in manufacturing. Among the rest the most frequent number is 10 jobs (in 539 LSOAs). High number of jobs ( > 1500) are an exception. 
 
-```{r}
+```{r include=FALSE}
 table(nom[,3]) # 22 LSOA with 20% jobs in Manufacturing Industry
 ```
 
-```{r}
+```{r echo=FALSE}
 nrow(table(nom$`Industry percentage`)) # [1] 107
 dInd <-as.data.frame(table(nom$`Industry percentage`))
 colnames(dInd) <-c("Perc.", "Frequency")
@@ -173,7 +179,7 @@ Summary of values > 0
 summary(nom1)
 ```
 
-```{r}
+```{r echo=FALSE}
 # style
 th <- theme_tufte(base_family = "Georgia")
 
@@ -185,12 +191,12 @@ grid.arrange(h1, h2, h3, h4, nrow=2)
 ```
 
 ## Boxpolots
-```{r}
+```{r include=FALSE}
 fnC <- fivenum(nom1$Count)
 fnP <- fivenum(nom1$`Industry percentage`)
 ```
 
-```{r}
+```{r echo=FALSE}
 anC <- annotate(geom="text", label=round(fnC ,digits=2), x= 1, y=fnC, size = 3, family = "Georgia", hjust =-.2)
 anP <- annotate(geom="text", label=round(fnP ,digits=2), x= 1, y=fnP, size = 3, family = "Georgia", hjust =-.2)
 th <- theme(axis.title=element_blank(),axis.ticks.x = element_blank(), axis.text.x=element_blank())
@@ -208,7 +214,7 @@ lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/st
 ```
 
 Create gray London basemap
-```{r echo=FALSE}
+```{r include=FALSE}
 gLon <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/MSOA_2011_London_gen_MHW.shp")
 gLonC <-st_combine(gLon)
 qtm(gLonC, fill = "grey90", borders = NULL)
@@ -221,9 +227,9 @@ names(mpl)
 ```
 
 Maps of job Counts > 40 and Percentage > 6% (> 3rd Q)
-```{r}
+```{r include=FALSE}
 # change column name
-colnames(mpl)[17] <- "IndPer"
+colnames(mpl)[18] <- "IndPer"
 
 c40 <- subset(mpl, Count >= 40) # 439 obs.
 p6 <- subset(mpl, IndPer >= 6) # 434 obs.
@@ -231,7 +237,7 @@ p6 <- subset(mpl, IndPer >= 6) # 434 obs.
 ```
 
 
-```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
 mc40 <- tm_shape(gLonC) +
   tm_fill(col = "gray95") +
   tm_shape(c40) +
@@ -250,7 +256,7 @@ mc40 <- tm_shape(gLonC) +
 mc40
 ```
 
-```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
 mp6 <- tm_shape(gLonC) +
   tm_fill(col = "gray95") + 
   tm_shape(p6) +
@@ -269,12 +275,12 @@ mp6 <- tm_shape(gLonC) +
 mp6
 ```
 
-```{r}
+```{r echo=FALSE}
 tmap_arrange(mc40 ,mp6 , nrow=1)
 ```
 A visual comparison shows that LSOAs with high number of jobs in some cases is coincident with LSOAs with high percentage of jobs. Both meaures might be indicators of 'manufacturing intensity'.
 
-```{r}
+```{r echo=FALSE}
 msum <- tm_shape(mpl) +
   tm_polygons(col="#ffffe5", border.col="#ededed", border.alpha = 0.01) + 
   tm_shape(c40) +
@@ -293,12 +299,13 @@ msum <- tm_shape(mpl) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
 ```
 
-```{r fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 msum
 ```
 
-Interactive Map
+Interactive Map  
+https://npalomin.github.io/pnum/msum.html  
 ```{r}
 #msum.i <- msum
 #tmap_mode("view")
@@ -311,7 +318,7 @@ Interactive Map
 
 
 The selection of values with both conditions Count >= 40 & IndPer >= 6 shows 253 obs.
-```{r fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=6, dpi=300, out.width="2000px"}
 CP <- subset(mpl, Count >= 40 & IndPer >= 6) # 253 obs.
 mCP <- tm_shape(CP) +
     tm_polygons(c("Count",
@@ -343,7 +350,7 @@ summary(ild)
 
 Largest area is near 81 ha and 1st Qu goes from 0 to 18 sqm. (sqm to ha = divide by 10k)
 Frequency by type ('TYPE_2015')  
-```{r}
+```{r echo=FALSE}
 t5 <- count(ild, vars = "TYPE_2015")
 
 htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
@@ -351,17 +358,17 @@ htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", 
 
 Shape area summary by Type
 ```{r}
-library(purrr)
-typeSUM <- ild %>% split(.$TYPE_2015) %>% map(summary)
+# library(purrr)
+# typeSUM <- ild %>% split(.$TYPE_2015) %>% map(summary)
 ```
 
-```{r}
+```{r include=FALSE}
 class(ild)
 ilddf <- st_set_geometry(ild, NULL)
 
 ```
 
-```{r}
+```{r include=FALSE}
 tSu <- ilddf[, c(8,15)] %>%
   group_by(TYPE_2015) %>%
   summarise_if(
@@ -370,7 +377,7 @@ tSu <- ilddf[, c(8,15)] %>%
   )
 ```
 
-```{r}
+```{r include=FALSE}
 round_df <- function(x, digits) {
     # round all numeric variables
     # x: data frame 
@@ -384,12 +391,12 @@ tSu <- cbind(tSu[,1], round_df(tSu[,2:5], 2))
 ```
 
 
-```{r}
+```{r echo=FALSE}
 htmlTable(tSu, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
 
 Analyse area distributuon by type
-```{r}
+```{r include=FALSE}
 ilddfT <- ilddf[,c(8,15)] 
 tyS <- t(sapply(
   by(
@@ -403,12 +410,12 @@ tyS
 
 ```
 
-```{r}
+```{r echo=FALSE}
 htmlTable(tyS, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
 
 
-```{r}
+```{r echo=FALSE}
 # faster function than ClassInt to calculate classes
 jenks7 <- getJenksBreaks(ilddfT$Shape_Area, 8)
 
@@ -427,7 +434,7 @@ attr(tyS1, "row.names")[4] <- "Total"
 htmlTable(tyS1, caption="Industrial Land Type Area Distribution (natural breaks)", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 # "URSID" = ' ' (N=26,876 obs.) 
 # read from Statistical Summary for 'Shape_Area' in QGIS
 
@@ -439,14 +446,14 @@ htmlTable(noCode1, rnames=F, caption="'Shape_Area' empty URSID", col.columns = c
 ```
 
 Sample of "URSID" = ' ' (N=26,876 obs.) by 'TYPE_2015'
-```{r, out.width = "1000px", echo=FALSE}
+```{r echo=FALSE, out.width="1000px"}
 knitr::include_graphics("noCode_IndLandDes.png")
 ```
 
 26,640 obs. (out of N=26,876 obs.) are 'NAL' 'TYPE_2015' (see AECOM map for meaning of NAL - might be Non-designated Sites, eventhough they are part of the 'GLA-Desiganted Industrial Land' dataset). The absence of 'URSID' code might be related to being 'Non-designated Sites'. However, there're 'big' sites of 'LSIS' and 'SIL' type without URSID code. Also, there might be uncoded 'NAL' type areas that have the potential of being classified as 'LSIS' or 'SIL'. The size of the area might be a factor to consider.  
 How is the size of the uncoded sites distributed according to 'TYPE_2015'?
 
-```{r}
+```{r echo=FALSE}
 # subset URSID = ''
 noURSID <- subset(ilddf, is.na(URSID))
 noURSID <- noURSID[,c(8,15)]
@@ -458,7 +465,213 @@ noUT
 
 ```
 
+In QGIS join attributes by location to calculate 'Shape_Area' of Industrial Land Designation per LSOA.
 
+```{r}
+library(readr)
+ildp <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/ildp.csv") # 4483
+```
+
+```{r include=FALSE}
+mpl_il <- append_data(mpl, ildp, key.shp = "LSOA11CD", key.data = "Category", ignore.duplicates = TRUE, ignore.na = TRUE)
+```
+
+Map of LSOA by 'Shape_Area' ('x' in dataset)
+```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+
+mpl_il$sh_a <- round(mpl_il$x)
+
+Mmpl_il <- tm_shape(mpl_il) +
+  tm_polygons("sh_a",
+              style="jenks",
+              palette="-viridis",
+              title="Industrial Land (m2)",
+              border.col="white",
+              border.alpha = 0.1,
+              lwd = 0.01,
+              alpha = 1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
+Mmpl_il
+```
+
+```{r}
+c_breaks <- getJenksBreaks(mpl_il$sh_a, 6)
+c_breaks <- append(c_breaks, c(20, 1000))
+c_breaks <- sort(c_breaks)
+```
+
+Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage > 3rd QU
+```{r include=FALSE}
+mH <- tm_shape(mpl_il) +
+  tm_polygons("sh_a",
+              style ="fixed",
+              breaks = c_breaks,
+              palette="-plasma",
+              title="Industrial Land (m2)",
+              border.col="white",
+              border.alpha = 0.1,
+              lwd = 0.01,
+              alpha = 0.8) +
+  tm_shape(p6) +
+  tm_polygons(border.col = "cyan", 
+              border.alpha = 0.5, 
+              alpha = 0,
+              popup.vars= c("Count" ,"IndPer")) +
+  tm_shape(c40) +
+  tm_polygons(border.col = "cyan", 
+              border.alpha = 0.5, 
+              alpha = 0,
+              popup.vars= c("Count" ,"IndPer")) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
+```
+
+Plot
+```{r echo=FALSE}
+tmap_mode("plot")
+mH
+```
+
+Interactive Map  
+https://npalomin.github.io/pnum/mH.html  
+```{r}
+# mH.i <- mH
+# tmap_mode("view")
+# mH.i
+# tmap_mode("plot")
+```
+
+```{r}
+# tmap_save(mH.i, "mH.html")
+```
+
+Selection of values by Conditions Count >= 40 & IndPer >= 6 & sh_a < 1000
+```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+# calculate Job Density
+mpl_il$lsoa_ar <- st_area(mpl_il)
+mpl_il$jDens <- mpl_il$Count / mpl_il$lsoa_ar
+mpl_il$jDens <- as.numeric(mpl_il$jDens)
+
+C3 <- subset(mpl_il, Count >= 40 & IndPer >= 6 & sh_a < 1000) # 19 obs.
+
+mC3 <- tm_shape(mpl) +
+  tm_polygons(col="#ffffe5", border.col="#ededed", border.alpha = 0.01) +
+  tm_shape(C3) +
+    tm_polygons("jDens",
+        style="jenks",
+        palette="PuRd",
+        title="Job density",
+        border.col="white",
+        border.alpha = 0.1,
+        popup.vars= c("Count" ,"IndPer", "jDens", "sh_a")) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "LSOA without ILD (N=19 obs.)",
+          main.title.position = "center",
+          main.title.size=0.9)
+mC3
+```
+
+Interactive Map
+https://npalomin.github.io/pnum/mC3.html 
+```{r}
+# mC3.i <- mC3
+# tmap_mode("view")
+# mC3.i
+# tmap_mode("plot")
+```
+
+```{r}
+# tmap_save(mC3.i, "mC3.html")
+```
+
+
+```{r eval=FALSE, include=FALSE}
+tm_shape(mpl_il) +
+    tm_polygons("lsoa_ar",
+        style="jenks",
+        palette="PuRd",
+        title="LSOA area",
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F)
+```
+
+In QGIS join attributes by location to calculate 'Shape_Area' of Industrial Land Designation per LSOA.
+
+```{r message=FALSE, warning=FALSE}
+c_sum <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/c_sum.csv")
+```
+
+```{r include=FALSE}
+fullA <- merge(mpl, c_sum, by = "LSOA11CD") # 5143 obs.
+```
+
+Maps of Industrial Land Designation (ILD) by 'TYPE_2015' per LSOA
+```{r include=FALSE}
+tm_shape(fullA) +
+  tm_polygons("Shape_Area",
+              style="jenks",
+        palette="BuPu",
+        title="ILD area",
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_facets(by="TYPE_2015", nrow = 1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F, 
+            legend.outside = T, legend.outside.position = "bottom",
+            panel.label.bg.color = 'white')
+```
+
+```{r message=FALSE, warning=FALSE}
+wide_DF <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/wide_DF.csv")
+```
+
+```{r}
+fullA1 <- merge(mpl, wide_DF, by = "LSOA11CD")
+```
+
+```{r include=FALSE}
+c_breaks_F <- getJenksBreaks(fullA1$il_Total, 6)
+c_breaks_F <- append(c_breaks, c(20, 1000))
+c_breaks_F <- sort(c_breaks)
+```
+
+Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage > 3rd QU
+(Industrial Land area by 'TYPE_2015')
+```{r echo=FALSE, fig.height=6, fig.width=12, dpi=300, out.width="2000px"}
+fullA1_m <- tm_shape(fullA1) +
+  tm_polygons(c("LSIS","SIL","NAL","il_Total"),
+              style ="fixed",
+              breaks = c_breaks_F,
+              palette=list("BuPu", "RdPu","PuBu","-plasma"),
+              border.col="white",
+              border.alpha = 0.1,
+              lwd = 0.01,
+              alpha = 0.7,
+              popup.vars= c("Count","IndPer","LSIS","SIL","NAL","il_Total")) +
+  tm_shape(p6) +
+  tm_borders(col = "cyan", 
+             alpha = 0.5) +
+  tm_shape(c40) +
+  tm_borders(col = "cyan",
+             alpha = 0.5) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), 
+            frame = F) +
+  tm_legend(legend.position = c("right", "bottom"))
+fullA1_m
+```
+
+Interactive Map  
+https://npalomin.github.io/pnum/fullA1_m.html  
+```{r}
+# fullA1_m.i <- fullA1_m + tm_facets(as.layers = TRUE) + tm_basemap(server="Esri.WorldImagery")
+# tmap_mode("view")
+# fullA1_m.i
+# tmap_mode("plot")
+```
+
+```{r}
+#tmap_save(fullA1_m.i, "fullA1_m.html")
+```
 
 
 
