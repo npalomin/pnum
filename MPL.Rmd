@@ -214,7 +214,7 @@ lsoa <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/st
 ```
 
 Create gray London basemap
-```{r include=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 gLon <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataRaw/statistical-gis-boundaries-london/ESRI/MSOA_2011_London_gen_MHW.shp")
 gLonC <-st_combine(gLon)
 qtm(gLonC, fill = "grey90", borders = NULL)
@@ -275,9 +275,10 @@ mp6 <- tm_shape(gLonC) +
 mp6
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height=6, fig.width=6, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 tmap_arrange(mc40 ,mp6 , nrow=1)
 ```
+  
 A visual comparison shows that LSOAs with high number of jobs in some cases is coincident with LSOAs with high percentage of jobs. Both meaures might be indicators of 'manufacturing intensity'.
 
 ```{r echo=FALSE}
@@ -299,7 +300,7 @@ msum <- tm_shape(mpl) +
   tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
 ```
 
-```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=6, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 msum
 ```
@@ -339,7 +340,7 @@ mCP
 
 ### Industrial Land 2015
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 ild <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp")
 ```
 
@@ -467,7 +468,7 @@ noUT
 
 In QGIS join attributes by location to calculate 'Shape_Area' of Industrial Land Designation per LSOA.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(readr)
 ildp <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/ildp.csv") # 4483
 ```
@@ -501,7 +502,7 @@ c_breaks <- sort(c_breaks)
 ```
 
 Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage > 3rd QU
-```{r include=FALSE}
+```{r fig.height=6, fig.width=6, message=FALSE, warning=FALSE, dpi=300, include=FALSE, out.width="2000px"}
 mH <- tm_shape(mpl_il) +
   tm_polygons("sh_a",
               style ="fixed",
@@ -526,7 +527,7 @@ mH <- tm_shape(mpl_il) +
 ```
 
 Plot
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 mH
 ```

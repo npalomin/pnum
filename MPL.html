@@ -90,9 +90,6 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
-.html-widget {
-  margin-bottom: 20px;
-}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -1393,8 +1390,8 @@ nom1 &lt;- subset(nom, nom$Count &gt; 0 &amp; nom$`Industry percentage` &gt; 0) 
 <p>Maps of job Counts &gt; 40 and Percentage &gt; 6% (&gt; 3rd Q)</p>
 <p><img src="MPL_files/figure-html/unnamed-chunk-19-1.png" width="2000px" /></p>
 <p><img src="MPL_files/figure-html/unnamed-chunk-20-1.png" width="2000px" /></p>
-<p><img src="MPL_files/figure-html/unnamed-chunk-21-1.png" width="672" /> A visual comparison shows that LSOAs with high number of jobs in some cases is coincident with LSOAs with high percentage of jobs. Both meaures might be indicators of ‘manufacturing intensity’.</p>
-<pre><code>## tmap mode set to plotting</code></pre>
+<p><img src="MPL_files/figure-html/unnamed-chunk-21-1.png" width="2000px" /></p>
+<p>A visual comparison shows that LSOAs with high number of jobs in some cases is coincident with LSOAs with high percentage of jobs. Both meaures might be indicators of ‘manufacturing intensity’.</p>
 <p><img src="MPL_files/figure-html/unnamed-chunk-23-1.png" width="2000px" /></p>
 <p>Interactive Map<br />
 <a href="https://npalomin.github.io/pnum/msum.html" class="uri">https://npalomin.github.io/pnum/msum.html</a></p>
@@ -1885,19 +1882,12 @@ How is the size of the uncoded sites distributed according to ‘TYPE_2015’?</
 <p>In QGIS join attributes by location to calculate ‘Shape_Area’ of Industrial Land Designation per LSOA.</p>
 <pre class="r"><code>library(readr)
 ildp &lt;- read_csv(&quot;/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/ildp.csv&quot;) # 4483</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Category = col_character(),
-##   x = col_double()
-## )</code></pre>
 <p>Map of LSOA by ‘Shape_Area’ (‘x’ in dataset) <img src="MPL_files/figure-html/unnamed-chunk-43-1.png" width="2000px" /></p>
 <pre class="r"><code>c_breaks &lt;- getJenksBreaks(mpl_il$sh_a, 6)
 c_breaks &lt;- append(c_breaks, c(20, 1000))
 c_breaks &lt;- sort(c_breaks)</code></pre>
 <p>Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage &gt; 3rd QU</p>
-<p>Plot</p>
-<pre><code>## tmap mode set to plotting</code></pre>
-<p><img src="MPL_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
+<p>Plot <img src="MPL_files/figure-html/unnamed-chunk-46-1.png" width="2000px" /></p>
 <p>Interactive Map<br />
 <a href="https://npalomin.github.io/pnum/mH.html" class="uri">https://npalomin.github.io/pnum/mH.html</a></p>
 <pre class="r"><code># mH.i &lt;- mH
