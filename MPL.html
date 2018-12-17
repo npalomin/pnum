@@ -131,10 +131,9 @@ $(document).ready(function () {
 <li><a href="#data-summary"><span class="toc-section-number">4.2</span> Data summary</a></li>
 <li><a href="#histograms"><span class="toc-section-number">4.3</span> Histograms</a></li>
 <li><a href="#boxpolots"><span class="toc-section-number">4.4</span> Boxpolots</a></li>
-<li><a href="#maps"><span class="toc-section-number">4.5</span> Maps</a><ul>
-<li><a href="#industrial-land-2015"><span class="toc-section-number">4.5.1</span> Industrial Land 2015</a></li>
+<li><a href="#maps"><span class="toc-section-number">4.5</span> Maps</a></li>
 </ul></li>
-</ul></li>
+<li><a href="#industrial-land-2015"><span class="toc-section-number">5</span> Industrial Land 2015</a></li>
 </ul>
 </div>
 
@@ -265,6 +264,8 @@ Number of workplaces per MSOA (N = 983 obs.) (4)
 <a href="https://github.com/npalomin/pnum/blob/master/ss_lsoa_light.md" class="uri">https://github.com/npalomin/pnum/blob/master/ss_lsoa_light.md</a></p>
 <p>Local Units and Enterprises Count per LSOA<br />
 <a href="https://npalomin.github.io/pnum/IDBR.html" class="uri">https://npalomin.github.io/pnum/IDBR.html</a></p>
+<p>GLA-Designated Industrial Land<br />
+<a href="https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html" class="uri">https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html</a></p>
 </div>
 <div id="analysis-of-bres" class="section level1">
 <h1><span class="header-section-number">4</span> Analysis of BRES</h1>
@@ -1400,8 +1401,10 @@ nom1 &lt;- subset(nom, nom$Count &gt; 0 &amp; nom$`Industry percentage` &gt; 0) 
 #msum.i</code></pre>
 <pre class="r"><code>#tmap_save(msum.i, &quot;msum.html&quot;)</code></pre>
 <p>The selection of values with both conditions Count &gt;= 40 &amp; IndPer &gt;= 6 shows 253 obs. <img src="MPL_files/figure-html/unnamed-chunk-26-1.png" width="2000px" /></p>
-<div id="industrial-land-2015" class="section level3">
-<h3><span class="header-section-number">4.5.1</span> Industrial Land 2015</h3>
+</div>
+</div>
+<div id="industrial-land-2015" class="section level1">
+<h1><span class="header-section-number">5</span> Industrial Land 2015</h1>
 <pre class="r"><code>ild &lt;- st_read(&quot;/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp&quot;)</code></pre>
 <pre><code>## Reading layer `GLA_Ind_Land_bl_2015&#39; from data source `/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 104006 features and 15 fields
@@ -1505,6 +1508,8 @@ SIL
 </tr>
 </tbody>
 </table>
+<p>Map of GLA Designated Industrial Land<br />
+<a href="https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html" class="uri">https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html</a></p>
 <p>Shape area summary by Type</p>
 <pre class="r"><code># library(purrr)
 # typeSUM &lt;- ild %&gt;% split(.$TYPE_2015) %&gt;% map(summary)</code></pre>
@@ -1915,8 +1920,6 @@ c_breaks &lt;- sort(c_breaks)</code></pre>
 # fullA1_m.i
 # tmap_mode(&quot;plot&quot;)</code></pre>
 <pre class="r"><code>#tmap_save(fullA1_m.i, &quot;fullA1_m.html&quot;)</code></pre>
-</div>
-</div>
 </div>
 
 

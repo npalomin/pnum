@@ -111,6 +111,9 @@ https://github.com/npalomin/pnum/blob/master/ss_lsoa_light.md
 Local Units and Enterprises Count per LSOA  
 https://npalomin.github.io/pnum/IDBR.html  
 
+GLA-Designated Industrial Land  
+https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html  
+
 # Analysis of BRES
 
 A detailed analysis was carried out for the BRES dataset due to four reasons:  
@@ -338,7 +341,7 @@ mCP <- tm_shape(CP) +
 mCP
 ```
 
-### Industrial Land 2015
+# Industrial Land 2015
 
 ```{r message=FALSE, warning=FALSE}
 ild <- st_read("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/GLA_Ind_Land_bl_2015.shp")
@@ -356,6 +359,9 @@ t5 <- count(ild, vars = "TYPE_2015")
 
 htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
+
+Map of GLA Designated Industrial Land  
+https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html  
 
 Shape area summary by Type
 ```{r}
