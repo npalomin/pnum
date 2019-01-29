@@ -100,7 +100,7 @@ This data set can be easily obtained.
 
 ## Manufacturing and Industrial Land
 ```{r echo=FALSE, optipng='-o7'}
-knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/mH.png")
+knitr::include_graphics("mH.png")
 ```
  
  _Industrial Land and Manufacturing jobs intensity per LSOA in London_
@@ -113,7 +113,7 @@ The red borders indicate LSOAs with high number or high percentage of jobs in Ma
 
 ## Industrial Designated Land by Type
 ```{r echo=FALSE, optipng='-o7'}
-knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/GLA_indLand/ILDm.png")
+knitr::include_graphics("ILDm.png")
 ```
 
 Fine grain information which apparently comes from direct surveys of the built environment (e.g. some roads were identified)
@@ -121,19 +121,19 @@ Fine grain information which apparently comes from direct surveys of the built e
 ## Manufacturing Local Units by MSOA
 
 ```{r echo=FALSE, optipng='-o7'}
-knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/Count.png")
+knitr::include_graphics("Count.png")
 ```
 
 A more detailed mapping process description of this map can be seen here: https://npalomin.github.io/pnum/IDBR.html 
 
 ## London Business Directory --- Manufacturing
 ```{r echo=FALSE, optipng='-o7'}
-knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/fpoint.png")
+knitr::include_graphics("fpoint.png")
 ```
 
 ## Street Network 'through routes' (choice 2km) per LSOA
 ```{r echo=FALSE, optipng='-o7'}
-knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/ch.png")
+knitr::include_graphics("ch.png")
 ```
 
 Data downloaded from Space Syntas OpenMapping website. An interactive version of this map with an overlay of count of Manufacturing jobs can be consulted here https://npalomin.github.io/pnum/syntax_interactive.html 
