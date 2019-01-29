@@ -109,18 +109,24 @@ join1 <- append_data(msoa, msoaC, key.shp = "MSOA11CD", key.data = "mnemonic", i
 ```
 
 Quick map
-```{r}
+```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 Count <- tm_shape(join1) +
   tm_polygons("Total",
               style="jenks",
               palette="BuPu",
-              title="Manufacturing Count per MSOA",
+              title="Manufacturing \nLocal Units per MSOA",
               border.col="white",
-              border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r 
+              border.alpha = 0.8,
+              lwd = 0.5) +
+  tm_layout(inner.margins = c(0, 0, 0, 0.1), frame = F) # b, l, t, r 
 Count
 ```
-  
+
+```{r}
+# tmap_save(mH.i, "mH.html")
+tmap_save(Count, "Count.png", dpi=600)
+```
+
 Quick 'spatial data classification method' comparison
 URLs: https://geocompr.robinlovelace.net/adv-map.html  
 

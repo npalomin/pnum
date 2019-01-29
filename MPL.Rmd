@@ -355,9 +355,9 @@ summary(ild)
 Largest area is near 81 ha and 1st Qu goes from 0 to 18 sqm. (sqm to ha = divide by 10k)
 Frequency by type ('TYPE_2015')  
 ```{r echo=FALSE}
-t5 <- count(ild, vars = "TYPE_2015")
+#t5 <- count(ild, vars = "TYPE_2015")
 
-htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
+#htmlTable(t5, rnames=F, caption="Industrial Land Type", col.columns = c("none", "#F7F7F7"), css.cell="padding-left:1em; padding-right:1em;")
 ```
 
 Map of GLA Designated Industrial Land  
@@ -484,7 +484,7 @@ mpl_il <- append_data(mpl, ildp, key.shp = "LSOA11CD", key.data = "Category", ig
 ```
 
 Map of LSOA by 'Shape_Area' ('x' in dataset)
-```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=8, dpi=300, out.width="2000px"}
 
 mpl_il$sh_a <- round(mpl_il$x)
 
@@ -497,7 +497,7 @@ Mmpl_il <- tm_shape(mpl_il) +
               border.alpha = 0.1,
               lwd = 0.01,
               alpha = 1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
+  tm_layout(inner.margins = c(0, 0, 0, 0), frame = F) 
 Mmpl_il
 ```
 
@@ -513,27 +513,29 @@ mH <- tm_shape(mpl_il) +
   tm_polygons("sh_a",
               style ="fixed",
               breaks = c_breaks,
-              palette="-plasma",
+              palette="YlGnBu",
               title="Industrial Land (m2)",
               border.col="white",
-              border.alpha = 0.1,
-              lwd = 0.01,
-              alpha = 0.8) +
+              border.alpha = 0.5,
+              lwd = 0.1,
+              alpha = 1) +
   tm_shape(p6) +
-  tm_polygons(border.col = "cyan", 
-              border.alpha = 0.5, 
+  tm_polygons(border.col = "tomato2", 
+              border.alpha = 1, 
+              lwd = 0.4,
               alpha = 0,
               popup.vars= c("Count" ,"IndPer")) +
   tm_shape(c40) +
-  tm_polygons(border.col = "cyan", 
-              border.alpha = 0.5, 
+  tm_polygons(border.col = "tomato2", 
+              border.alpha = 1,
+              lwd = 0.4,
               alpha = 0,
               popup.vars= c("Count" ,"IndPer")) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) 
+  tm_layout(inner.margins = c(0, 0, 0, 0.1), frame = F) 
 ```
 
 Plot
-```{r echo=FALSE, fig.height=6, fig.width=10, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
+```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 mH
 ```
@@ -549,7 +551,14 @@ https://npalomin.github.io/pnum/mH.html
 
 ```{r}
 # tmap_save(mH.i, "mH.html")
+tmap_save(mH, "mH.png", dpi=600)
 ```
+
+```{r eval=FALSE, include=FALSE}
+Map with detail.
+https://geocompr.robinlovelace.net/adv-map.html  
+```
+
 
 Selection of values by Conditions Count >= 40 & IndPer >= 6 & sh_a < 1000
 ```{r echo=FALSE, fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
@@ -644,7 +653,7 @@ c_breaks_F <- sort(c_breaks)
 
 Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage > 3rd QU
 (Industrial Land area by 'TYPE_2015')
-```{r echo=FALSE, fig.height=6, fig.width=12, dpi=300, out.width="2000px"}
+```{r, full, echo=FALSE, fig.height=6, fig.width=12, dpi=300, out.width="2000px"}
 fullA1_m <- tm_shape(fullA1) +
   tm_polygons(c("LSIS","SIL","NAL","il_Total"),
               style ="fixed",
@@ -661,7 +670,7 @@ fullA1_m <- tm_shape(fullA1) +
   tm_shape(c40) +
   tm_borders(col = "cyan",
              alpha = 0.5) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), 
+  tm_layout(inner.margins = c(0, 0, 0.1, 0.2), 
             frame = F) +
   tm_legend(legend.position = c("right", "bottom"))
 fullA1_m

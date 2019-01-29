@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>London wide questions</title>
+
+<script src="LW_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="LW_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="LW_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="LW_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="LW_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="LW_files/navigation-1.1/tabsets.js"></script>
+<link href="LW_files/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="LW_files/highlightjs-9.12.0/highlight.js"></script>
+<link href="LW_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="LW_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">London wide questions</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#where-in-london-is-manufacturing-taking-place"><span class="toc-section-number">1</span> Where in London is manufacturing taking place?</a><ul>
+<li><a href="#clustered-vs-dispersed"><span class="toc-section-number">1.1</span> Clustered vs dispersed?</a></li>
+<li><a href="#in-and-around-high-streets-or-major-street-networks"><span class="toc-section-number">1.2</span> In and around high streets or major street networks?</a></li>
+<li><a href="#on-designated-industrial-states-segragated"><span class="toc-section-number">1.3</span> On designated industrial states? (segragated)</a></li>
+<li><a href="#in-mostly-mixed-use-environments-integrated"><span class="toc-section-number">1.4</span> In mostly mixed use environments? (integrated)</a></li>
+<li><a href="#along-water-networks-i.e.historical-path-dependency"><span class="toc-section-number">1.5</span> Along water networks? (i.e. historical path dependency)</a></li>
+<li><a href="#eastwestnorthsouth"><span class="toc-section-number">1.6</span> East/west/north/south?</a></li>
+<li><a href="#outer-vs-inner-london"><span class="toc-section-number">1.7</span> Outer vs inner London?</a></li>
+</ul></li>
+<li><a href="#cartographies"><span class="toc-section-number">2</span> Cartographies</a><ul>
+<li><a href="#manufacturing-and-industrial-land"><span class="toc-section-number">2.1</span> Manufacturing and Industrial Land</a></li>
+<li><a href="#industrial-designated-land-by-type"><span class="toc-section-number">2.2</span> Industrial Designated Land by Type</a></li>
+<li><a href="#manufacturing-local-units-by-msoa"><span class="toc-section-number">2.3</span> Manufacturing Local Units by MSOA</a></li>
+<li><a href="#london-business-directory-manufacturing"><span class="toc-section-number">2.4</span> London Business Directory — Manufacturing</a></li>
+<li><a href="#street-network-through-routes-choice-2km-per-lsoa"><span class="toc-section-number">2.5</span> Street Network ‘through routes’ (choice 2km) per LSOA</a></li>
+</ul></li>
+</ul>
+</div>
+
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
+<div id="where-in-london-is-manufacturing-taking-place" class="section level1">
+<h1><span class="header-section-number">1</span> Where in London is manufacturing taking place?</h1>
+<p>The type of data we have explored offers different ways to answer this question however there are some limitations. The 4 main data sets have the following general characteristics:</p>
+<ol style="list-style-type: decimal">
+<li>Directory of London Businesses (SIC) — Point data of ‘financial accounts submissions’</li>
+<li>BRES (employment survey) — Number of jobs per LSOA by Industry (SIC)</li>
+<li>IDBR (business register) — Number of local units per MSOA by Industry (SIC)</li>
+<li>Industrial Land Designations — GLA polygons of Strategic Industrial land (SIL), Locally Significant Industrial Site (LSIS) and NALs (non-designated industrial areas)</li>
+</ol>
+<p>Notes:<br />
+<strong>SIC</strong> is ‘Standard Industrial Classification’<br />
+A more detailed descritpion of <strong>1, 2, 3</strong> can be seen here <a href="https://npalomin.github.io/pnum/MPL.html" class="uri">https://npalomin.github.io/pnum/MPL.html</a> and <strong>4</strong> here <a href="https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html" class="uri">https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html</a></p>
+<p>Despite the fact that 1, 2, and 3 represent the same theme; ‘Manufacturing’ according to SIC, the spatial resolution and geometric representation of the data (varying size areas and points) poses challenges for data integration or comparaison.</p>
+<div id="clustered-vs-dispersed" class="section level2">
+<h2><span class="header-section-number">1.1</span> Clustered vs dispersed?</h2>
+<p>Kernel density estimation (KDE) may provide an exploratory tool for hot-spot and cool-spot analysis of SIC point data. However this kind analysis is only exploratory (variations in density will show different results)</p>
+<p>More computationally intensive techniques include the analysis of SIC point data (discrete observations) with point pattern analysis to quantify the spatial pattern (Quadrat Analysis, Ripley’s K and DBSCAN)</p>
+<p>These last methods can also be used with area data (OAs) to check if manufacturing areas cluster together accross London. Nevertheless, perhaps a visualisation of the point data is sufficient.</p>
+</div>
+<div id="in-and-around-high-streets-or-major-street-networks" class="section level2">
+<h2><span class="header-section-number">1.2</span> In and around high streets or major street networks?</h2>
+<p>Space Syntax data can be overlaid on top of Manufacturing POINTS, JOBS per LSOA, and LOCAL UNITS per MSOA</p>
+</div>
+<div id="on-designated-industrial-states-segragated" class="section level2">
+<h2><span class="header-section-number">1.3</span> On designated industrial states? (segragated)</h2>
+<p>How can these be exactly identified? This ‘atribute’ doesn’t seem to be included in the GLA data set.</p>
+</div>
+<div id="in-mostly-mixed-use-environments-integrated" class="section level2">
+<h2><span class="header-section-number">1.4</span> In mostly mixed use environments? (integrated)</h2>
+<p>Space Synatax data could be used as a proxy</p>
+</div>
+<div id="along-water-networks-i.e.historical-path-dependency" class="section level2">
+<h2><span class="header-section-number">1.5</span> Along water networks? (i.e. historical path dependency)</h2>
+<p>This data set has not yet been searched.</p>
+</div>
+<div id="eastwestnorthsouth" class="section level2">
+<h2><span class="header-section-number">1.6</span> East/west/north/south?</h2>
+<p>This could be answered with the point data visualization.</p>
+</div>
+<div id="outer-vs-inner-london" class="section level2">
+<h2><span class="header-section-number">1.7</span> Outer vs inner London?</h2>
+<p>This data set can be easily obtained.</p>
+</div>
+</div>
+<div id="cartographies" class="section level1">
+<h1><span class="header-section-number">2</span> Cartographies</h1>
+<div id="manufacturing-and-industrial-land" class="section level2">
+<h2><span class="header-section-number">2.1</span> Manufacturing and Industrial Land</h2>
+<p><img src="/Users/nicolas/Documents/R_Github/pnum/mH.png" width="2188" /></p>
+<p><em>Industrial Land and Manufacturing jobs intensity per LSOA in London</em></p>
+<p><a href="https://npalomin.github.io/pnum/mH.html" class="uri">https://npalomin.github.io/pnum/mH.html</a></p>
+<p>The cartographic process considered using QGIS to join attributes by location and calculate ‘Shape_Area’ of Industrial Land Designation per LSOA. The source data comes in a ESRI shape file ‘GLA_Ind_Land_bl_2015.shp’ provided by GLA. The existence pf a ‘Missing’ class could be because some LSOAs don’t have any type of Industrial Land or because of a failure on the geoprocessing in QGIS due to the high spatial resolution of the industrial land polygons. All types of Industrial Land are considered (including NALs). An interactive map deaggregated by type can be consulted here <a href="https://npalomin.github.io/pnum/fullA1_m.html" class="uri">https://npalomin.github.io/pnum/fullA1_m.html</a></p>
+<p>The red borders indicate LSOAs with high number or high percentage of jobs in Manufacturing (4th quartile — number 40 - 6000 units; percentage 6 - 100 %). A more detailed analysis can be found here <a href="https://npalomin.github.io/pnum/MPL.html" class="uri">https://npalomin.github.io/pnum/MPL.html</a></p>
+</div>
+<div id="industrial-designated-land-by-type" class="section level2">
+<h2><span class="header-section-number">2.2</span> Industrial Designated Land by Type</h2>
+<p><img src="/Users/nicolas/Documents/R_Github/pnum/GLA_indLand/ILDm.png" width="2188" /></p>
+<p>Fine grain information which apparently comes from direct surveys of the built environment (e.g. some roads were identified)</p>
+</div>
+<div id="manufacturing-local-units-by-msoa" class="section level2">
+<h2><span class="header-section-number">2.3</span> Manufacturing Local Units by MSOA</h2>
+<p><img src="/Users/nicolas/Documents/R_Github/pnum/Count.png" width="2188" /></p>
+<p>A more detailed mapping process description of this map can be seen here: <a href="https://npalomin.github.io/pnum/IDBR.html" class="uri">https://npalomin.github.io/pnum/IDBR.html</a></p>
+</div>
+<div id="london-business-directory-manufacturing" class="section level2">
+<h2><span class="header-section-number">2.4</span> London Business Directory — Manufacturing</h2>
+<p><img src="/Users/nicolas/Documents/R_Github/pnum/fpoint.png" width="2188" /></p>
+</div>
+<div id="street-network-through-routes-choice-2km-per-lsoa" class="section level2">
+<h2><span class="header-section-number">2.5</span> Street Network ‘through routes’ (choice 2km) per LSOA</h2>
+<p><img src="/Users/nicolas/Documents/R_Github/pnum/ch.png" width="2188" /></p>
+<p>Data downloaded from Space Syntas OpenMapping website. An interactive version of this map with an overlay of count of Manufacturing jobs can be consulted here <a href="https://npalomin.github.io/pnum/syntax_interactive.html" class="uri">https://npalomin.github.io/pnum/syntax_interactive.html</a></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

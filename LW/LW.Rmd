@@ -1,0 +1,143 @@
+---
+title: "London wide questions"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+    self_contained: no
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
+---
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
+
+```{r include=FALSE}
+library(knitr)
+knit_hooks$set(optipng = hook_optipng)
+# http://www.zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/
+```
+
+# Where in London is manufacturing taking place?
+
+The type of data we have explored offers different ways to answer this question however there are some limitations. The 4 main data sets have the following general characteristics:
+
+1. Directory of London Businesses (SIC) --- Point data of 'financial accounts submissions'
+2. BRES (employment survey) --- Number of jobs per LSOA by Industry (SIC)
+3. IDBR (business register) --- Number of local units per MSOA by Industry (SIC)
+4. Industrial Land Designations --- GLA polygons of Strategic Industrial land (SIL), Locally Significant Industrial Site (LSIS) and NALs (non-designated industrial areas)
+
+Notes:  
+**SIC** is 'Standard Industrial Classification'  
+A more detailed descritpion of **1, 2, 3** can be seen here https://npalomin.github.io/pnum/MPL.html and **4** here https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html
+
+Despite the fact that 1, 2, and 3 represent the same theme; 'Manufacturing' according to SIC, the spatial resolution and geometric representation of the data (varying size areas and points) poses challenges for data integration or comparaison.
+
+## Clustered vs dispersed?
+
+Kernel density estimation (KDE) may provide an exploratory tool for hot-spot and cool-spot analysis of SIC point data. However this kind analysis is only exploratory (variations in density will show different results)
+
+More computationally intensive techniques include the analysis of SIC point data (discrete observations) with point pattern analysis to quantify the spatial pattern (Quadrat Analysis, Ripley's K and DBSCAN)
+
+These last methods can also be used with area data (OAs) to check if manufacturing areas cluster together accross London. Nevertheless, perhaps a visualisation of the point data is sufficient.
+
+## In and around high streets or major street networks?
+
+Space Syntax data can be overlaid on top of Manufacturing POINTS, JOBS per LSOA, and LOCAL UNITS per MSOA
+
+## On designated industrial states? (segragated)
+
+How can these be exactly identified? This 'atribute' doesn't seem to be included in the GLA data set.
+
+## In mostly mixed use environments? (integrated)
+
+Space Synatax data could be used as a proxy
+
+## Along water networks? (i.e. historical path dependency)
+
+This data set has not yet been searched.
+
+## East/west/north/south?
+
+This could be answered with the point data visualization.
+
+## Outer vs inner London?
+
+This data set can be easily obtained. 
+
+# Cartographies
+
+## Manufacturing and Industrial Land
+```{r echo=FALSE, optipng='-o7'}
+knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/mH.png")
+```
+ 
+ _Industrial Land and Manufacturing jobs intensity per LSOA in London_
+ 
+ https://npalomin.github.io/pnum/mH.html
+
+The cartographic process considered using QGIS to join attributes by location and calculate ‘Shape_Area’ of Industrial Land Designation per LSOA. The source data comes in a ESRI shape file 'GLA_Ind_Land_bl_2015.shp' provided by GLA. The existence pf a 'Missing' class could be because some LSOAs don't have any type of Industrial Land or because of a failure on the geoprocessing in QGIS due to the high spatial resolution of the industrial land polygons. All types of Industrial Land are considered (including NALs). An interactive map deaggregated by type can be consulted here https://npalomin.github.io/pnum/fullA1_m.html 
+
+The red borders indicate LSOAs with high number or high percentage of jobs in Manufacturing (4th quartile --- number 40 - 6000 units; percentage 6 - 100 %). A more detailed analysis can be found here https://npalomin.github.io/pnum/MPL.html 
+
+## Industrial Designated Land by Type
+```{r echo=FALSE, optipng='-o7'}
+knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/GLA_indLand/ILDm.png")
+```
+
+Fine grain information which apparently comes from direct surveys of the built environment (e.g. some roads were identified)
+
+## Manufacturing Local Units by MSOA
+
+```{r echo=FALSE, optipng='-o7'}
+knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/Count.png")
+```
+
+A more detailed mapping process description of this map can be seen here: https://npalomin.github.io/pnum/IDBR.html 
+
+## London Business Directory --- Manufacturing
+```{r echo=FALSE, optipng='-o7'}
+knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/fpoint.png")
+```
+
+## Street Network 'through routes' (choice 2km) per LSOA
+```{r echo=FALSE, optipng='-o7'}
+knitr::include_graphics("/Users/nicolas/Documents/R_Github/pnum/ch.png")
+```
+
+Data downloaded from Space Syntas OpenMapping website. An interactive version of this map with an overlay of count of Manufacturing jobs can be consulted here https://npalomin.github.io/pnum/syntax_interactive.html 
+
+
+
+

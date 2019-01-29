@@ -6,6 +6,7 @@ output:
   html_document:
     number_sections: true
     theme: readable
+    self_contained: no
 ---
 <style>
   h1, h2, h3, h4, h5, h6{
@@ -124,16 +125,20 @@ qtm(man)
 
 Style map 'Manufacturing'
 
-```{r message=FALSE, warning=FALSE}
-
+```{r fig.height=6, fig.width=8, dpi=300, out.width="2000px"}
 tmap_mode("plot") # or "plot" or "view"
-tm_shape(man) + 
-  tm_symbols(size=0.1,
+fpoint <- tm_shape(man) + 
+  tm_symbols(size=0.05,
              shape = 20,
              col = "magenta", 
              alpha = .1,
-             border.lwd = NA
-  )
+             border.lwd = NA) +
+  tm_layout(inner.margins = c(0.05, 0.05, 0.05, 0.05), frame = F)
+fpoint
+```
+
+```{r}
+tmap_save(fpoint, "/Users/nicolas/Documents/R_Github/pnum/fpoint.png", dpi=600)
 ```
 
 ## interactive map manufacturing

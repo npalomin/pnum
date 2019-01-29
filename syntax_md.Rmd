@@ -104,17 +104,24 @@ join1 <- append_data(censusb, choice2, key.shp = "LSOA11CD", key.data = "lsoa11c
 qtm(join1,fill="choice2kmrank")
 ```
   
-## curtomize choice map
-```{r}
+## customize choice map
+```{r echo=FALSE, fig.height=6, fig.width=9, message=FALSE, warning=FALSE, dpi=300, out.width="2000px"}
 ch <- tm_shape(join1) + 
   tm_polygons("choice2kmrank",
               style="jenks",
-              palette="-RdYlBu",
-              title="Choice 2km Mean per LSOA",
+              n=7,
+              palette="-Spectral",
+              title="Choice 2km Mean \nper LSOA",
               border.col="white",
-              border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) # b, l, t, r
+              border.alpha = 0.5,
+              lwd = 0.1) +
+  tm_layout(inner.margins = c(0, 0, 0, 0.1), frame = F) # b, l, t, r
 ch 
+```
+
+```{r}
+# tmap_save(mH.i, "mH.html")
+tmap_save(ch, "ch.png", dpi=600)
 ```
 
 ## append nomis data

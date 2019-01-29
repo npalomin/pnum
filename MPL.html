@@ -1463,51 +1463,7 @@ nom1 &lt;- subset(nom, nom$Count &gt; 0 &amp; nom$`Industry percentage` &gt; 0) 
 ##                         
 ##                         
 ## </code></pre>
-Largest area is near 81 ha and 1st Qu goes from 0 to 18 sqm. (sqm to ha = divide by 10k) Frequency by type (‘TYPE_2015’)<br />
-
-<table class="gmisc_table" style="border-collapse: collapse; margin-top: 1em; margin-bottom: 1em;">
-<thead>
-<tr>
-<td colspan="2" style="text-align: left;">
-Industrial Land Type
-</td>
-</tr>
-<tr>
-<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
-TYPE_2015
-</th>
-<th style="border-bottom: 1px solid grey; border-top: 2px solid grey; text-align: center;">
-freq
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="padding-left:1em; padding-right:1em; text-align: center;">
-LSIS
-</td>
-<td style="padding-left:1em; padding-right:1em; text-align: center; background-color: #f7f7f7;">
-20264
-</td>
-</tr>
-<tr>
-<td style="padding-left:1em; padding-right:1em; text-align: center;">
-NAL
-</td>
-<td style="padding-left:1em; padding-right:1em; text-align: center; background-color: #f7f7f7;">
-45716
-</td>
-</tr>
-<tr>
-<td style="padding-left:1em; padding-right:1em; border-bottom: 2px solid grey; text-align: center;">
-SIL
-</td>
-<td style="padding-left:1em; padding-right:1em; border-bottom: 2px solid grey; text-align: center; background-color: #f7f7f7;">
-38026
-</td>
-</tr>
-</tbody>
-</table>
+<p>Largest area is near 81 ha and 1st Qu goes from 0 to 18 sqm. (sqm to ha = divide by 10k) Frequency by type (‘TYPE_2015’)</p>
 <p>Map of GLA Designated Industrial Land<br />
 <a href="https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html" class="uri">https://npalomin.github.io/pnum/GLA_indLand/GLA_indLand.html</a></p>
 <p>Shape area summary by Type</p>
@@ -1912,7 +1868,7 @@ c_breaks &lt;- sort(c_breaks)</code></pre>
 <p>Maps of Industrial Land Designation (ILD) by ‘TYPE_2015’ per LSOA</p>
 <pre class="r"><code>wide_DF &lt;- read_csv(&quot;/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/GLA_Ind_Land_Baseline_2015/wide_DF.csv&quot;)</code></pre>
 <pre class="r"><code>fullA1 &lt;- merge(mpl, wide_DF, by = &quot;LSOA11CD&quot;)</code></pre>
-<p>Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage &gt; 3rd QU (Industrial Land area by ‘TYPE_2015’) <img src="MPL_files/figure-html/unnamed-chunk-59-1.png" width="2000px" /></p>
+<p>Map of Industrial Land highlighting LSOAs with Manufacturing Jobs Count and Percentage &gt; 3rd QU (Industrial Land area by ‘TYPE_2015’) <img src="MPL_files/figure-html/full-1.png" width="2000px" /></p>
 <p>Interactive Map<br />
 <a href="https://npalomin.github.io/pnum/fullA1_m.html" class="uri">https://npalomin.github.io/pnum/fullA1_m.html</a></p>
 <pre class="r"><code># fullA1_m.i &lt;- fullA1_m + tm_facets(as.layers = TRUE) + tm_basemap(server=&quot;Esri.WorldImagery&quot;)

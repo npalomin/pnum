@@ -6,6 +6,7 @@ output:
     toc: yes
     toc_depth: '3'
     number_sections: yes
+    self_contained: no
   html_notebook:
     number_sections: yes
     toc: yes
@@ -111,17 +112,17 @@ bmLon <-st_union(bmLon)
 qtm(bmLon, fill = "grey90", borders = NULL)
 ```
 
-```{r fig.height=6, fig.width=10, dpi=300, out.width="2000px"}
+```{r fig.height=6, fig.width=9, dpi=300, out.width="2000px"}
 tmap_mode("plot")
 ILDm <- tm_shape(bmLon) +
   tm_fill(col = "gray95") +
   tm_shape(ild) +
   tm_polygons("TYPE_2015",
-              palette="Dark2",
+              palette=c("gold3","tomato3", "royalblue3"),
               title="TYPE_2015",
               border.col="white",
               border.alpha = 0.1) +
-  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F)
+  tm_layout(inner.margins = c(0, 0, 0, 0.1), frame = F)
 ILDm
 ```
 Interactive Map
@@ -133,5 +134,9 @@ Interactive Map
 
 ```{r}
 # tmap_save(ILDm.i, "ildm.html")
+```
+
+```{r}
+tmap_save(ILDm, "ILDm.png", dpi=600)
 ```
 

@@ -1,0 +1,113 @@
+---
+title: "Template"
+output:
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+---
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(ggplot2)
+library(ggthemes)
+library(gridExtra)
+library(knitr)
+library(htmlTable)
+library(readr)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(spData)
+library(tidyverse)
+library(maptools)
+library(RColorBrewer)
+library(plyr)
+```
+
+Load SS Open Mapping Data
+```{r}
+lss <- readOGR('/Volumes/ucfnnap/GIS/GLON/GLONst/ssx_openmapping_lon.shp')
+```
+
+```{r}
+qtm(lss)
+```
+
+```{r}
+test <- tm_shape(lss) +
+  tm_lines("CH2KRANK", style = "jenks", palette = "-Spectral", lwd = 0.5)
+test
+```
+
+
+```{r}
+oview <- tm_shape(join2) +
+    tm_polygons(c("Total",
+                  "C : Manufacturing",
+                  "G : Wholesale and retail trade; repair of motor vehicles and motorcycles",
+                  "I : Accommodation and food service activities"), 
+        style="jenks",
+        palette="PuRd",
+        auto.palette.mapping=FALSE,
+        title=c("Local Units \nManufacturing",
+                "Enterprises \nManufacturing",
+                "Enterprises Retail",
+                "Enterprises \nFood Service"),
+        border.col="white",
+        border.alpha = 0.1) +
+  tm_layout(inner.margins = c(0, 0.1, 0.05, 0.2), frame = F) +
+  tm_legend(legend.position = c("right", "bottom"),
+          main.title = "Count per MSOA",
+          main.title.position = "right",
+          main.title.size=0.9)
+oview
+```
+
+# Introduction
+
+# Analysis
+
+# Conclusion
+
+# References
+
+# Bibliography
