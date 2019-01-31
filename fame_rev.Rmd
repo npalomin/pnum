@@ -38,6 +38,8 @@ https://data.london.gov.uk/dataset/statistical-gis-boundary-files-london
 https://data.cdrc.ac.uk/dataset/tlrn  
 https://data.london.gov.uk/dataset/directory-of-london-businesses  
 
+http://www.siccodesupport.co.uk/  
+
 ***
 
 **libraries**
@@ -115,13 +117,37 @@ bilsf <- st_as_sf(bilsp)
 
 Subset by 'Manufacturing' . Plotting 'bil' won't work quickly because N = 1,130,474 obs.
 ```{r}
-man <- subset(bilsp, divname == "Manufacturing")
+man <- subset(bilsf, divname == "Manufacturing")
 ```
 
 Plot quick map "Manufacturing"
 ```{r}
 qtm(man)
 ```
+
+How many 'classes' of Manufacturing? (see 'Division' number)
+```{r}
+suMan <- count(man, vars = "division")
+```
+
+```{r}
+head(man$SICCode.SicText_1)
+```
+
+```{r}
+head(bilsf$SICCode.SicText_1)
+```
+
+Extract all characters before "-"
+```{r}
+code <- sub("\\-.*", "", man$SICCode.SicText_1)
+```
+
+Create variable 'code'
+```{r}
+man <- mutate(man, code = sub("\\-.*", "", man$SICCode.SicText_1))
+```
+
 
 Style map 'Manufacturing'
 

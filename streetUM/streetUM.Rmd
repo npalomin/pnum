@@ -1,16 +1,16 @@
 ---
 title: "Template"
 output:
-  html_notebook:
-    number_sections: yes
-    toc: yes
-    toc_depth: 3
-    toc_float: no
   html_document:
     df_print: paged
     toc: yes
     toc_depth: '3'
     number_sections: yes
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
 ---
 <style>
 * {
@@ -73,9 +73,28 @@ qtm(lss)
 ```
 
 ```{r}
-test <- tm_shape(lss) +
+test <- tm_shape(name) +
   tm_lines("CH2KRANK", style = "jenks", palette = "-Spectral", lwd = 0.5)
+
+```
+
+```{r}
 test
+```
+
+
+```{r}
+name <- st_read('/Volumes/ucfnnap/GIS/GLON/GLONst/ssx_openmapping_lon.shp')
+name <- st_as_sf(name)
+```
+
+```{r}
+class(name)
+```
+
+
+```{r}
+qtm(name)
 ```
 
 
