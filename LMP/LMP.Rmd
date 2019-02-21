@@ -1,0 +1,147 @@
+---
+title: "London Manufacture Profiler"
+output:
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '3'
+    number_sections: yes
+  html_notebook:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: no
+    self_contained: no
+---
+<style>
+* {
+  font-family: "Palatino"
+}
+
+h1{
+    font-size: 190%
+}
+
+h2{
+    font-size: 160%
+}
+
+h3{
+    font-size: 150%
+}
+
+h4{
+    font-size: 130%
+}
+
+h5{
+    font-size: 110%
+}
+
+h6{
+    font-size: 90%
+}
+</style>
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+library(maptools)
+library(RColorBrewer)
+library(classInt)
+library(sp)
+library(rgeos)
+library(tmap)
+library(tmaptools)
+library(sf)
+library(rgdal)
+library(geojsonio)
+library(ggplot2)
+library(spData)
+library(tidyverse)
+library(ggmap)
+library(htmlTable)
+```
+
+# Introduction
+
+Interactive map development that combines Space Synatax measures and Manufacturing indicators in London
+
+## Data Layers
+The following is a selection of data layers to create maps for a graphical investigation of Manufacturing in London.
+
+### a. Space Syntax Measures (OpenMapping)
+https://spacesyntax-openmapping.netlify.com/
+
+| | 2 km |10 km |
+|:---|---|---|
+| Choice | Higher 20% | Higher 20% |
+| Integration| Higher 20% | Higher 20% |
+
+### b. Manufacturing/Industrial Measures
+https://npalomin.github.io/pnum/LW/LW.html 
+
+1. Industrial Designation Land
+2. Manufacturing Jobs per LSOA
+3. Directory of London Businesses (POINT data)
+
+##  Maps functionalities
+
+- Data layer selection
+- Navigational interactivity (pan and zoom)
+
+# Analysis
+
+## Data collection
+
+Space Syntax
+```{r include=FALSE}
+LMPs <- read_csv("/Volumes/ucfnnap/R/Rprojects/ssyntax/ldnssx_wkt.csv")
+```
+
+```{r}
+LMPs <- st_as_sf(LMPs, wkt='WKT', crs=27700)
+```
+
+```{r}
+fivenum(LMPs$choice2km)
+```
+
+```{r}
+summary(LMPs$choice10km)
+```
+```{r}
+choice2_20 <-head(LMPs[order(LMPs$choice2km,decreasing=T),],.20*nrow(LMPs))
+choice10_20 <-head(LMPs[order(LMPs$choice10km,decreasing=T),],.20*nrow(LMPs))
+integration2_20 <-head(LMPs[order(LMPs$integration2km ,decreasing=T),],.20*nrow(LMPs))
+integration10_20 <-head(LMPs[order(LMPs$integration10km ,decreasing=T),],.20*nrow(LMPs))
+```
+
+Summary tables
+```{r}
+t1 <- summary(choice2_20$choice2km)
+t2 <- summary(choice10_20$choice10km)
+t3 <- summary(integration2_20$integration2km)
+t4 <- summary(integration10_20$integration10km)
+```
+
+```{r}
+t1234 <- rbind(t1,t2,t3,t4)
+htmlTable(txtRound(t1234, 1), align='r', col.columns = c('none', '#F7F7F7'), css.cell='padding:1em', rnames = c("Choice 2km", "Choice 10km", "Integration 2km", "Integration 10km"), caption="Summary of highest 20% values of Choice and Integration (n=23409)")
+```
+
+```{r}
+m1 <- qtm(choice2_20) + tm_legend(main.title ="Choice 2km", main.title.size=1, fontfamily='Palatino') + tm_layout(frame=F, main.title.position = "center")
+m2 <- qtm(choice10_20) + tm_legend(main.title ="Choice 10km", main.title.size=1, fontfamily='Palatino') + tm_layout(frame=F, main.title.position = "center")
+m3 <- qtm(integration2_20) + tm_legend(main.title ="Integration 2km", main.title.size=1, fontfamily='Palatino') + tm_layout(frame=F, main.title.position = "center")
+m4 <- qtm(integration10_20) + tm_legend(main.title ="Integration 10km", main.title.size=1, fontfamily='Palatino') + tm_layout(frame=F, main.title.position = "center")
+```
+
+```{r}
+tmap_arrange(m1, m2, m3, m4, ncol = 2)
+```
+
+
+# Conclusion
+
+# References
+
+# Bibliography
