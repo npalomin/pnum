@@ -115,6 +115,13 @@ SP to SF
 bilsf <- st_as_sf(bilsp)
 ```
 
+/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/
+
+```{r}
+st_write(bilsf,"/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/fame_points_ldn.csv", layer_options = "GEOMETRY=AS_WKT", delete_dsn=TRUE)
+```
+
+
 Subset by 'Manufacturing' . Plotting 'bil' won't work quickly because N = 1,130,474 obs.
 ```{r}
 man <- subset(bilsf, divname == "Manufacturing")

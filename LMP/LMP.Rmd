@@ -1,5 +1,5 @@
 ---
-title: "London Manufacture Profiler"
+title: "London Manufacturing Profiler"
 output:
   html_document:
     df_print: paged
@@ -139,6 +139,72 @@ m4 <- qtm(integration10_20) + tm_legend(main.title ="Integration 10km", main.tit
 tmap_arrange(m1, m2, m3, m4, ncol = 2)
 ```
 
+Read London Business Directory point data
+```{r}
+points <- read_csv("/Volumes/ritd-ag-project-rd00lq-jamfe87/GIS_Analysis/dataProcessed/fame_points_ldn.csv")
+```
+
+```{r}
+points <- st_as_sf(points, wkt='WKT', crs=27700)
+```
+
+```{r}
+man <- subset(points, divname == "Manufacturing")
+```
+
+```{r}
+qtm(man)
+```
+
+Mapdeck-gl
+```{r}
+devtools::install_github("SymbolixAU/colourvalues", force = TRUE)
+devtools::install_github("SymbolixAU/spatialwidget", force = TRUE)
+devtools::install_github("SymbolixAU/mapdeck")
+```
+
+```{r}
+library(mapdeck)
+key <- "pk.eyJ1IjoibnBhbG9taW4iLCJhIjoiY2owMDF5YXQxMDA2eDMybmwwd2tqYTU3bSJ9.Icvrku6Q57o8L0gncJI89g"
+```
+
+```{r}
+mapdeck(token = key, style = mapdeck_style('light')) %>%
+  add_scatterplot(man, radius = 50, fill_opacity=100) 
+```
+
+```{r}
+l_deck <- mapdeck(token = key, style = mapdeck_style('light')) %>%
+  add_path(choice10_20)
+```
+
+```{r}
+library(htmltools)
+save_html(l_deck, "l_deck.html")
+```
+
+
+
+```{r}
+library(leaflet)
+```
+
+```{r}
+leaflet(man) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addCircles()
+```
+
+```{r}
+choice10_20
+```
+
+
+```{r}
+leaflet(choice10_20) %>%
+  addProviderTiles(providers$CartoDB.Positron) %>%
+  addPolylines()
+```
 
 # Conclusion
 
