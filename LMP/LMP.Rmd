@@ -6,6 +6,7 @@ output:
     toc: yes
     toc_depth: '3'
     number_sections: yes
+    self_contained: no
   html_notebook:
     number_sections: yes
     toc: yes
@@ -59,6 +60,8 @@ library(spData)
 library(tidyverse)
 library(ggmap)
 library(htmlTable)
+library(mapdeck)
+library(htmltools)
 ```
 
 # Introduction
@@ -164,7 +167,7 @@ devtools::install_github("SymbolixAU/mapdeck")
 ```
 
 ```{r}
-library(mapdeck)
+
 key <- "pk.eyJ1IjoibnBhbG9taW4iLCJhIjoiY2owMDF5YXQxMDA2eDMybmwwd2tqYTU3bSJ9.Icvrku6Q57o8L0gncJI89g"
 ```
 
@@ -175,11 +178,26 @@ mapdeck(token = key, style = mapdeck_style('light')) %>%
 
 ```{r}
 l_deck <- mapdeck(token = key, style = mapdeck_style('light')) %>%
-  add_path(choice10_20)
+  add_scatterplot(data = man,
+                  radius = 30, 
+                  fill_opacity=100,
+                  legend = TRUE) %>%
+  add_path(data = choice2_20,
+           stroke_colour = "#5b2880",
+           tooltip = "choice2km",
+           stroke_width = 3)
+l_deck
 ```
 
 ```{r}
-library(htmltools)
+choice2_20 <- st_transform(choice2_20, crs = 4326)
+choice2_20
+```
+
+
+
+
+```{r}
 save_html(l_deck, "l_deck.html")
 ```
 
@@ -205,6 +223,29 @@ leaflet(choice10_20) %>%
   addProviderTiles(providers$CartoDB.Positron) %>%
   addPolylines()
 ```
+
+tmap
+```{r}
+map1 <- tm_shape(choice10_20) +
+  tm_lines() +
+  tm_basemap(server="Esri.WorldImagery")
+map1
+```
+
+
+```{r}
+st_write(choice10_20, "choice10_20.geojson", driver = "GeoJSON")
+st_write(choice2_20, "choice2_20.geojson", driver = "GeoJSON")
+
+st_write(integration10_20, "integration10_20.geojson", driver = "GeoJSON")
+st_write(integration2_20, "integration2_20.geojson", driver = "GeoJSON")
+
+st_write(man, "man.geojson", driver = "GeoJSON")
+```
+
+
+deck.gl
+
 
 # Conclusion
 
