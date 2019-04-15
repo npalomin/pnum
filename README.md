@@ -23,6 +23,8 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |`171218`|Manufacturing Places|https://npalomin.github.io/pnum/MPL.html  |
 |`290119`|London wide questions|https://npalomin.github.io/pnum/LW/LW.html |
 |`250219`|London Manufacturing Profiler|https://npalomin.github.io/pnumdeck/table1/table1.html |
+|`020419`|Trading Address (FAME) analysis|https://npalomin.github.io/pnumdeck/t_address/t_address.html |
+|`020419`|Trading Address interactive|https://npalomin.github.io/pnumdeck/t_address/tradingA.html | 
       
 
 ## Manufacturing Classification schemes reference
