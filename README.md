@@ -31,6 +31,7 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |Description| URL|
 |-|-|
 |Canals 1830| http://www.ph.ucla.edu/epi/Snow/1859map/londonindex.html| 
+|Railways 1899| https://iiif.lib.harvard.edu/manifests/view/ids:8982539$1i |
 
 ## Manufacturing Classification schemes reference
 
