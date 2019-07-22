@@ -26,6 +26,11 @@ space syntax to rethink planning assumptions of the ‘good city'.*
 |`020419`|Trading Address (FAME) analysis|https://npalomin.github.io/pnumdeck/t_address/t_address.html |
 |`020419`|Trading Address interactive|https://npalomin.github.io/pnumdeck/t_address/tradingA.html | 
       
+## Reference links
+
+|Description| URL|
+|-|-|
+|Canals 1830| http://www.ph.ucla.edu/epi/Snow/1859map/londonindex.html| 
 
 ## Manufacturing Classification schemes reference
 
