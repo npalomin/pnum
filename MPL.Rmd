@@ -58,7 +58,7 @@ library(tmaptools)
 library(sf)
 library(rgdal)
 library(geojsonio)
-library(spData)
+#library(spData)
 library(tidyverse)
 library(maptools)
 library(RColorBrewer)
@@ -67,11 +67,12 @@ library(plyr)
 library(reshape)
 library(classInt)
 #install.packages("BAMMtools")
-library(BAMMtools)
+#library(BAMMtools)
 #install.packages("psych")
-library(psych)
+#library(psych)
 library(data.table)
 library(viridis)
+library(xtable)
 ```
 
 # Problem
@@ -93,6 +94,13 @@ Version <- c('May 2018','2017 (latest data)','2018 (latest data)')
 sT <- data.frame(Name, Source, Observation, General_Desc, Version)
 htmlTable(sT, rnames=F, align="l", col.columns = c("none", "#F7F7F7"), css.cell="padding:1em")
 ```
+
+```{r}
+options(xtable.floating = TRUE) # TRUE for centred table
+options(xtable.timestamp = "")
+xtable(sT) # copy/paste into overleaf
+```
+
 
 URLs:  
 1 https://data.london.gov.uk   
