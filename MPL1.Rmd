@@ -1,15 +1,15 @@
 ---
 title: "Manufacturing places in London"
 output:
+  html_document:
+    number_sections: yes
+    self_contained: no
+    toc: yes
   html_notebook:
     number_sections: yes
     toc: yes
     toc_depth: 3
     toc_float: no
-  html_document:
-    number_sections: yes
-    self_contained: no
-    toc: yes
 ---
 <style>
 * {
@@ -84,41 +84,41 @@ Identify locations outside the Industrial Land Designation areas with high conce
 We have analysed 3 open data datasets refering to Manufacturing in London.  
 
 ```{r include=FALSE}
-Name <- c('Directory of London Businesses - UK Standard Industrial Classification (SIC)',
-          'Business Register and Employment Survey - BRES',
-          'Inter Departmental Business Register (IDBR)')
+Data <- c('Directory of London Businesses',
+          'Business Register and Employment Survey (BRES)',
+          'Inter Departmental Business Register (IDBR)',
+          'Spatial configuration metrics (Choice and Integration')
+Description <- c('“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”',
+                 '“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”',
+                 '“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”',
+                '"Choice is based on the graph measure of Betweenness Centrality. Space syntax adapts this to measure how often a street segment appears on the simplest route between all other street segments in the network.", "Integration is based on the graph measure of Closeness Centrality. Space syntax adapts this to measure the number of street segments within a defined distance, accounting for their distance and change in direction from the starting segment."')
 Source <- c('London Data Store (1)',
             'NOMIS - Official Labour Market Statistics ONS (2)',
-            'NOMIS - Official Labour Market Statistics ONS')
-Observation <- c('“Data snapshot containing basic company data of live companies on the register. Each entry represents a financial accounts submission of either a whole company or part of one. Some businesses have more than one entry in the directory because they need to submit more than one set of accounts for different parts of their business.” “The London cut available to download here, was created using a postcode list… inaccuracies in postcodes may mean that no local authority is listed for a company.”',
-                 '“An employer survey of the number of jobs held by employees broken down by full/part-time and detailed industry (5 digit SIC2007)”',
-                 '“An extract recording the number of local units that were live at a reference date in March. Estimates can be broken down by employment size band, detailed industry (5 digit SIC2007) and legal status.” - “A local unit is an individual site (for example a factory or shop) associated with an enterprise. It can also be referred to as a workplace.”')
-General_Desc <- c('Point data, N = 1,130,474 obs.',
-                  'Estimated number of jobs per LSOA (N = 4,835 obs.) Includes Industry percentage (percentage of jobs in Manufacturing) (3)',
-                  'Number of workplaces per MSOA (N = 983 obs.) (4)')
-Version <- c('May 2018',
-             '2017 (latest data)',
-             '2018 (latest data)')
+            'NOMIS - Official Labour Market Statistics ONS (2)',
+            'Space Syntax Limited (3)')
+Characteristics <- c('Points (registered office address), N = 1,130,474, 2018',
+                  'Polygons (statistical lower super output area boundary), N = 4,835, 2017',
+                  'Polygons (statistical medium super output area boundary), N = 983, 2018',
+                  'Lines (street segments), N = 111,582, 2019')
 ```
 
 ```{r echo=FALSE}
-sT <- data.frame(Name, Source, Observation, General_Desc, Version)
-htmlTable(sT, rnames=F, align="l", col.columns = c("none", "#F7F7F7"), css.cell="padding:1em")
+sT1 <- data.frame(Data, Description, Source, Characteristics)
+#htmlTable(sT, rnames=F, align="l", col.columns = c("none", "#F7F7F7"), css.cell="padding:1em")
 ```
 
 ```{r}
 options(xtable.floating = TRUE) # TRUE for centred table
 options(xtable.timestamp = "")
-xtable(sT) # copy/paste into overleaf
+xtable(sT1) # copy/paste into overleaf
 ```
 
 ```{r}
 options(knitr.table.format = "latex")
 ```
 
-```{r}
-options(knitr.table.format = "latex")
-kable(sT, "html", booktabs = T)
+```{r, results='asis'}
+kable(sT, "latex", booktabs = T)
 ```
 
 
